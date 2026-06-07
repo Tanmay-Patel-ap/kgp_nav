@@ -1,0 +1,172 @@
+/* ── SEARCH PANEL ────────────────────────── */
+#search-panel {
+  position: absolute;
+  top: calc(var(--header-h) + 12px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  width: var(--panel-w);
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius);
+  overflow: visible;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.7);
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateX(-50%) translateY(-8px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+/* ── FIELD ───────────────────────────────── */
+.search-field {
+  position: relative;
+  border-bottom: 1px solid var(--border);
+}
+.search-field:last-of-type { border-bottom: none; }
+
+.field-label {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.field-icon {
+  display: inline-block;
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  border: 1.5px solid;
+}
+.origin-icon { border-color: var(--accent2); background: var(--accent2); }
+.dest-icon   { border-color: var(--warn); background: var(--warn); }
+
+#origin-input,
+#dest-input {
+  width: 100%;
+  padding: 14px 14px 14px 72px;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 400;
+  caret-color: var(--accent);
+  transition: background 0.15s;
+}
+#origin-input::placeholder,
+#dest-input::placeholder {
+  color: var(--text-dim);
+}
+#origin-input:focus,
+#dest-input:focus {
+  background: var(--surface2);
+}
+
+/* ── DROPDOWN ────────────────────────────── */
+.search-dropdown {
+  position: absolute;
+  top: calc(100% + 2px);
+  left: -1px;
+  right: -1px;
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius);
+  overflow: hidden;
+  z-index: 2000;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+  max-height: 240px;
+  overflow-y: auto;
+}
+.search-dropdown:empty { display: none; }
+
+.dropdown-item {
+  padding: 10px 14px;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--text);
+  border-bottom: 1px solid var(--border);
+  transition: background 0.1s, color 0.1s;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.dropdown-item:last-child { border-bottom: none; }
+.dropdown-item::before {
+  content: '';
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--text-dim);
+  flex-shrink: 0;
+  transition: background 0.1s;
+}
+.dropdown-item:hover {
+  background: var(--surface2);
+  color: var(--accent);
+}
+.dropdown-item:hover::before { background: var(--accent); }
+
+/* ── SWAP BUTTON ─────────────────────────── */
+#swap-btn {
+  align-self: flex-end;
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius);
+  color: var(--text-muted);
+  width: 28px; height: 28px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+  z-index: 10;
+}
+#swap-btn:hover { color: var(--accent); border-color: var(--accent); }
+
+/* reposition swap inside the panel between fields */
+#search-panel { position: absolute; }
+
+/* swap is between origin and dest fields, positioned absolutely within panel */
+.search-field { padding-right: 48px; }
+
+/* ── NAVIGATE BUTTON ─────────────────────── */
+#route-btn {
+  width: 100%;
+  padding: 13px 14px;
+  background: transparent;
+  border: none;
+  border-top: 1px solid var(--border2);
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: background 0.15s, color 0.15s;
+}
+#route-btn:hover {
+  background: rgba(0,212,255,0.08);
+  color: var(--accent);
+}
+#route-btn:active { background: rgba(0,212,255,0.15); }

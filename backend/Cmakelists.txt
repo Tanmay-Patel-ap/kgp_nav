@@ -1,0 +1,54 @@
+cmake_minimum_required(VERSION 3.16)
+project(campus_nav CXX)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# ── Release build flags ────────────────────────────────────────────
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Release)
+endif()
+set(CMAKE_CXX_FLAGS_RELEASE "-O2")
+
+# ── Include dirs ──────────────────────────────────────────────────
+include_directories(include)
+
+# ── Dependencies (single-header, placed in include/) ──────────────
+# cpp-httplib  → include/httplib.h
+#   https://github.com/yhirose/cpp-httplib/releases (httplib.h)
+#
+# nlohmann/json → include/nlohmann/json.hpp
+#   https://github.com/nlohmann/json/releases (json.hpp)
+
+# ── Source files ──────────────────────────────────────────────────
+set(SOURCES
+    src/main.cpp
+    src/graph.cpp
+    src/buildings.cpp
+    src/pathfinder.cpp
+    src/server.cpp
+)
+
+# ── Binary ────────────────────────────────────────────────────────
+add_executable(campus_nav ${SOURCES})
+
+# ── Threads (required by httplib) ─────────────────────────────────
+find_package(Threads REQUIRED)
+target_link_libraries(campus_nav Threads::Threads)
+
+# ── Windows socket libs (required by httplib on Windows) ──────────
+if(WIN32)
+  target_link_libraries(campus_nav ws2_32 wsock32)
+endif()
+
+# ── Disable DLL import lib generation ─────────────────────────────
+set_target_properties(campus_nav PROPERTIES
+  ENABLE_EXPORTS OFF
+)
+
+# ── OpenSSL (optional — only if you need HTTPS) ───────────────────
+# find_package(OpenSSL)
+# if(OpenSSL_FOUND)
+#   target_link_libraries(campus_nav OpenSSL::SSL OpenSSL::Crypto)
+#   target_compile_definitions(campus_nav PRIVATE CPPHTTPLIB_OPENSSL_SUPPORT)
+# endif()

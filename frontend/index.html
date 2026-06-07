@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IIT KGP — Campus Navigator</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+
+  <link rel="stylesheet" href="css/map.css">
+  <link rel="stylesheet" href="css/search.css">
+  <link rel="stylesheet" href="css/sidebar.css">
+</head>
+<body>
+
+  <!-- HUD HEADER -->
+  <header id="hud-header">
+    <div id="hud-logo">
+      <span class="logo-bracket">[</span>
+      <span class="logo-text">KGP NAV</span>
+      <span class="logo-bracket">]</span>
+    </div>
+    <div id="hud-stage">
+      <span class="stage-pill active" data-stage="outdoor">OUTDOOR</span>
+    </div>
+    <div id="hud-status">
+      <span class="status-dot"></span>
+      <span id="status-text">READY</span>
+    </div>
+  </header>
+
+  <!-- SEARCH PANEL -->
+  <div id="search-panel">
+
+    <!-- Origin -->
+    <div class="search-field" id="origin-field">
+      <div class="field-label">
+        <span class="field-icon origin-icon"></span>
+        FROM
+      </div>
+      <input
+        type="text"
+        id="origin-input"
+        placeholder="Origin building..."
+        autocomplete="off"
+      />
+      <div class="search-dropdown" id="origin-dropdown"></div>
+    </div>
+
+    <!-- Swap button -->
+    <button id="swap-btn" title="Swap origin and destination">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <path d="M3 4.5L7 1L11 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M11 9.5L7 13L3 9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <line x1="7" y1="1" x2="7" y2="13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </button>
+
+    <!-- Destination -->
+    <div class="search-field" id="dest-field">
+      <div class="field-label">
+        <span class="field-icon dest-icon"></span>
+        TO
+      </div>
+      <input
+        type="text"
+        id="dest-input"
+        placeholder="Destination building..."
+        autocomplete="off"
+      />
+      <div class="search-dropdown" id="dest-dropdown"></div>
+    </div>
+
+    <!-- Go button -->
+    <button id="route-btn">
+      <span>NAVIGATE</span>
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <path d="M2 7H12M8 3L12 7L8 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+  </div>
+
+  <!-- SIDEBAR (route result) -->
+  <div id="sidebar" class="hidden">
+    <div id="sidebar-header">
+      <span id="sidebar-title">ROUTE</span>
+      <button id="sidebar-close">✕</button>
+    </div>
+
+    <div id="route-meta">
+      <div class="meta-block">
+        <span class="meta-label">DISTANCE</span>
+        <span class="meta-value" id="route-distance">—</span>
+      </div>
+      <div class="meta-block">
+        <span class="meta-label">EST. WALK</span>
+        <span class="meta-value" id="route-time">—</span>
+      </div>
+    </div>
+
+    <div id="route-steps">
+      <div class="steps-label">WAYPOINTS</div>
+      <div id="steps-list"></div>
+    </div>
+
+    <button id="clear-route-btn">CLEAR ROUTE</button>
+  </div>
+
+  <!-- MAP -->
+  <div id="map"></div>
+
+  <!-- COORDS HUD (bottom) -->
+  <div id="coords-hud">
+    <span id="coords-text">22.3149° N  87.3105° E</span>
+    <span id="zoom-text">Z:16</span>
+  </div>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/layers.js"></script>
+  <script src="js/search.js"></script>
+  <script src="js/route.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/map.js"></script>
+</body>
+</html>
