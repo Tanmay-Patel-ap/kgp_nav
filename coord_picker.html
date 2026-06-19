@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IIT Kharagpur - Offset Inspector</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', sans-serif; background: #0a0a0a; color: #e0e0e0; }
+  #map { width: 100vw; height: 100vh; }
+  #coords-box {
+    position: fixed; top: 16px; right: 16px; z-index: 1000;
+    background: rgba(10,10,10,0.92); border: 1px solid #333;
+    border-radius: 8px; padding: 16px 20px; min-width: 340px;
+    font-family: 'Space Mono', monospace; font-size: 13px;
+    backdrop-filter: blur(8px); max-height: 90vh; overflow-y: auto;
+  }
+  #coords-box h3 {
+    font-family: 'Inter', sans-serif; font-size: 11px;
+    text-transform: uppercase; letter-spacing: 1.5px;
+    color: #666; margin-bottom: 12px;
+  }
+  .coord-row { margin-bottom: 6px; }
+  .coord-label { color: #00d4ff; display: inline-block; width: 40px; }
+  .coord-value { color: #fff; font-weight: bold; }
+  .coord-hint { color: #555; font-size: 11px; margin-top: 10px; }
+  #node-info {
+    background: rgba(255,87,34,0.1); border: 1px solid rgba(255,87,34,0.3);
+    border-radius: 6px; padding: 10px 12px; margin-top: 12px; display: none;
+  }
+  #node-info .ni-title { color: #ff5722; font-weight: bold; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+  #node-info .ni-row { margin-bottom: 3px; color: #ccc; font-size: 12px; }
+  #node-info .ni-val { color: #fff; font-weight: bold; }
+  .legend { margin-top: 12px; border-top: 1px solid #333; padding-top: 10px; }
+  .legend-item { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; font-size: 11px; color: #999; }
+  .legend-swatch { width: 20px; height: 3px; border-radius: 2px; }
+  #point-list { margin-top: 12px; max-height: 200px; overflow-y: auto; }
+  .point-entry {
+    background: rgba(0,212,255,0.08); border: 1px solid rgba(0,212,255,0.2);
+    border-radius: 4px; padding: 6px 8px; margin-bottom: 4px;
+    font-size: 11px; display: flex; justify-content: space-between;
+  }
+  .point-entry .coords { color: #ccc; }
+  .point-entry .num { color: #00d4ff; font-weight: bold; margin-right: 6px; }
+  .copy-btn {
+    background: #00d4ff; color: #000; border: none; border-radius: 3px;
+    padding: 2px 8px; cursor: pointer; font-size: 10px; font-weight: bold;
+  }
+  .copy-btn:hover { background: #00b8d4; }
+  .copy-btn.copied { background: #4caf50; }
+</style>
+</head>
+<body>
+
+<div id="map"></div>
+
+<div id="coords-box">
+  <h3>Offset Inspector</h3>
+  <div class="coord-row">
+    <span class="coord-label">LAT</span>
+    <span class="coord-value" id="lat">&mdash;</span>
+  </div>
+  <div class="coord-row">
+    <span class="coord-label">LON</span>
+    <span class="coord-value" id="lon">&mdash;</span>
+  </div>
+
+  <div id="node-info">
+    <div class="ni-title">Graph Node</div>
+    <div class="ni-row">Node ID: <span class="ni-val" id="ni-id"></span></div>
+    <div class="ni-row">OSM ID: <span class="ni-val" id="ni-osm"></span></div>
+    <div class="ni-row">LAT: <span class="ni-val" id="ni-lat"></span></div>
+    <div class="ni-row">LON: <span class="ni-val" id="ni-lon"></span></div>
+    <div class="ni-row">Edges: <span class="ni-val" id="ni-edges"></span></div>
+  </div>
+
+  <div class="coord-hint">Hover graph nodes (red dots) for details</div>
+  <div class="coord-hint">Click on map to log a point</div>
+
+  <div class="legend">
+    <div class="legend-item"><div class="legend-swatch" style="background:#ff5722;"></div> Graph nodes (hover for ID)</div>
+    <div class="legend-item"><div class="legend-swatch" style="background:#00d4ff;"></div> Your road data</div>
+
+  </div>
+
+  <div id="point-list"></div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+  const map = L.map('map', {
+    center: [22.3149, 87.3105],
+    zoom: 17,
+    zoomControl: false,
+    maxZoom: 21,
+    minZoom: 15
+  });
+
+  L.control.zoom({ position: 'bottomleft' }).addTo(map);
+
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; CARTO',
+    maxZoom: 21
+  }).addTo(map);
+
+  const latEl = document.getElementById('lat');
+  const lonEl = document.getElementById('lon');
+  const nodeInfo = document.getElementById('node-info');
+  const listEl = document.getElementById('point-list');
+  let points = [];
+  let markers = [];
+
+  // ── MOUSE MOVE ──
+  map.on('mousemove', function(e) {
+    latEl.textContent = e.latlng.lat.toFixed(6);
+    lonEl.textContent = e.latlng.lng.toFixed(6);
+  });
+
+  // ── CLICK TO LOG POINT ──
+  map.on('click', function(e) {
+    const lat = e.latlng.lat.toFixed(6);
+    const lon = e.latlng.lng.toFixed(6);
+    points.push({ lat, lon });
+
+    const marker = L.circleMarker([parseFloat(lat), parseFloat(lon)], {
+      radius: 5, color: '#00d4ff', fillColor: '#00d4ff',
+      fillOpacity: 0.9, weight: 1
+    }).addTo(map);
+    marker.bindTooltip('P' + points.length, { permanent: true, className: 'point-label' });
+    markers.push(marker);
+
+    const entry = document.createElement('div');
+    entry.className = 'point-entry';
+    entry.innerHTML =
+      '<span><span class="num">P' + points.length + '</span><span class="coords">' + lat + ', ' + lon + '</span></span>' +
+      '<button class="copy-btn" onclick="copyPoint(this, \'' + lat + ', ' + lon + '\')">COPY</button>';
+    listEl.appendChild(entry);
+    listEl.scrollTop = listEl.scrollHeight;
+  });
+
+  function copyPoint(btn, text) {
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'COPIED';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = 'COPY'; btn.classList.remove('copied'); }, 1200);
+    });
+  }
+
+  // ── LOAD ROADS (your data) ──
+  fetch('./frontend/public/data/outdoor/rendering/roads.geojson')
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      L.geoJSON(data, {
+        style: function(f) {
+          var hw = f.properties.highway;
+          var s = { tertiary: {color:'#00d4ff',weight:4,opacity:0.8},
+                    secondary: {color:'#00b8d4',weight:3,opacity:0.75},
+                    residential: {color:'#0097a7',weight:2.5,opacity:0.7},
+                    service: {color:'#00838f',weight:2,opacity:0.6},
+                    footway: {color:'#006064',weight:1.5,opacity:0.5},
+                    pedestrian: {color:'#00897b',weight:2,opacity:0.6} };
+          return s[hw] || {color:'#0097a7',weight:2,opacity:0.6};
+        }
+      }).addTo(map);
+    });
+
+  // ── LOAD GRAPH NODES + EDGES ──
+  var nodeAdj = {};
+  var graphNodes = [];
+
+  Promise.all([
+    fetch('./frontend/public/data/outdoor/navigation/campus_graph.json').then(function(r) { return r.json(); }),
+    fetch('./frontend/public/data/outdoor/navigation/campus_buildings.json').then(function(r) { return r.json(); })
+  ]).then(function(results) {
+    var graph = results[0];
+    var buildings = results[1];
+    graphNodes = graph.nodes;
+
+    // build adjacency list for edge count
+    graph.edges.forEach(function(e) {
+      if (!nodeAdj[e.from]) nodeAdj[e.from] = [];
+      if (!nodeAdj[e.to]) nodeAdj[e.to] = [];
+      nodeAdj[e.from].push(e.to);
+      nodeAdj[e.to].push(e.from);
+    });
+
+    // render edges as subtle lines
+    var edgeLines = graph.edges.map(function(e) {
+      var from = graph.nodes[e.from];
+      var to = graph.nodes[e.to];
+      return [[from.lat, from.lon], [to.lat, to.lon]];
+    });
+    L.polyline(edgeLines, { color:'#ff5722', weight:0.8, opacity:0.25 }).addTo(map);
+
+    // render nodes with hover tooltips
+    var nodeLayer = L.geoJSON(null, {
+      pointToLayer: function(feature, latlng) {
+        return L.circleMarker(latlng, {
+          radius: 3, color: '#ff5722', fillColor: '#ff5722',
+          fillOpacity: 0.7, weight: 0.5, opacity: 0.8
+        });
+      }
+    });
+
+    graph.nodes.forEach(function(n) {
+      var pt = L.circleMarker([n.lat, n.lon], {
+        radius: 3, color: '#ff5722', fillColor: '#ff5722',
+        fillOpacity: 0.7, weight: 0.5, opacity: 0.8
+      });
+
+      pt.on('mouseover', function() {
+        pt.setStyle({ radius: 6, fillColor: '#ffab00', color: '#ffab00', fillOpacity: 1, weight: 2 });
+        var edgeCount = (nodeAdj[n.id] || []).length;
+        document.getElementById('ni-id').textContent = n.id;
+        document.getElementById('ni-osm').textContent = n.osm_id;
+        document.getElementById('ni-lat').textContent = n.lat;
+        document.getElementById('ni-lon').textContent = n.lon;
+        document.getElementById('ni-edges').textContent = edgeCount;
+        nodeInfo.style.display = 'block';
+      });
+
+      pt.on('mouseout', function() {
+        pt.setStyle({ radius: 3, color: '#ff5722', fillColor: '#ff5722', fillOpacity: 0.7, weight: 0.5, opacity: 0.8 });
+      });
+
+      pt.bindTooltip('Node ' + n.id, { permanent: false, direction: 'top', offset: [0, -6] });
+      pt.addTo(map);
+    });
+  });
+</script>
+</body>
+</html>

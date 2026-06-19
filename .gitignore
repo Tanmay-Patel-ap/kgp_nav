@@ -1,0 +1,9 @@
+backend/build/
+backend/include/httplib.h
+backend/include/nlohmann/
+cache/
+*.exe
+*.obj
+*.a
+__pycache__/
+*.ipynb_checkpoints
