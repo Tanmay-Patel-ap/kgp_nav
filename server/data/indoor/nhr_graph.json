@@ -1,0 +1,2140 @@
+{
+  "id": 52,
+  "name": "Nehru Hall of Residence",
+  "prefix": "nhr",
+  "entrance_node": "1484",
+  "blocks": [
+    {
+      "name": "Block A",
+      "floors": 4
+    },
+    {
+      "name": "Block B",
+      "floors": 4
+    }
+  ],
+  "total_rooms": 159,
+  "nodes": [
+    {
+      "id": "010001",
+      "name": "main gate",
+      "type": "entrance",
+      "block": "Block A",
+      "blockIdx": 0,
+      "floor": 0
+    },
+    {
+      "id": "010002",
+      "name": "Conference room",
+      "type": "office",
+      "block": "Block A",
+      "blockIdx": 0,
+      "floor": 0
+    },
+    {
+      "id": "010003",
+      "name": "Hall Office",
+      "type": "office",
+      "block": "Block A",
+      "blockIdx": 0,
+      "floor": 0
+    },
+    {
+      "id": "010004",
+      "name": "A 101",
+      "type": "room",
+      "block": "Block A",
+      "blockIdx": 0,
+      "floor": 0
+    },
+    {
+      "id": "010005",
+      "name": "A 102",
+      "type": "room",
+      "block": "Block A",
+      "blockIdx": 0,
+      "floor": 0
+    },
+    {
+      "id": "010006",
+      "name": "A 103",
+      "type": "room",
+      "block": "Block A",
+      "blockIdx": 0,
+      "floor": 0
+    },
+    {
+      "id": "010007",
+      "name": "A 104",
+      "type": "room",
+      "block": "Block A",
+      "blockIdx": 0,
+      "floor": 0
+    },
+    {
+      "id": "010008",
+      "name": "A 106",
+      "type": "room",
+      "block": "Block A",
+      "blockIdx": 0,
+      "floor": 0
+    },
+    {
+      "id": "010009",
+      "name": "A 105",
+      "type": "room",
+      "block": "Block A",
+      "blockIdx": 0,
+      "floor": 0
+    },
+    {
+      "id": "010010",
+      "name": "A 107",
+      "type": "room",
+      "block": "Block A",
+      "blockIdx": 0,
+      "floor": 0
+    },
+    {
+      "id": "010011",
+      "name": "A 108",
+      "type": "room",
+      "block": "Block A",
+      "blockIdx": 0,
+      "floor": 0
+    },
+    {
+      "id": "010012",
+      "name": "A 109",
+      "type": "room",
+      "block": "Block A",
+      "blockIdx": 0,
+      "floor": 0
+    },
+    {
+      "id": "010013",
+      "name": "A 110",
+      "type": "room",
+      "block": "Block A",
+      "blockIdx": 0,
+      "floor": 0
+    },
+    {
+      "id": "010014",
+      "name": "Washroom(A0))",
+      "type": "room",
+      "block": "Block A",
+      "blockIdx": 0,
+      "floor": 0
+    },
+    {
+      "id": "010017",
+      "name": "common room",
+      "type": "room",
+      "block": "Block A",
+      "blockIdx": 0,
+      "floor": 0
+    },
+    {
+      "id": "011001",
+      "name": "A 201",
+      "type": "room",
+      "block": "Block A",
+      "blockIdx": 0,
+      "floor": 1
+    },
+    {
+      "id": "011002",
+      "name": "A 202",
+      "type": "room",
+      "block": "Block A",
+      "blockIdx": 0,
+      "floor": 1
+    },
+    {
+      "id": "011003",
+      "name": "A 203",
+      "type": "room",
+      "block": "Block A",
+      "blockIdx": 0,
+      "floor": 1
+    },
+    {
+      "id": "011004",
+      "name": "A 204",
+      "type": "room",
+      "block": "Block A",
+      "blockIdx": 0,
+      "floor": 1
+    },
+    {
+      "id": "011005",
+      "name": "A 205",
+      "type": "room",
+      "block": "Block A",
+      "blockIdx": 0,
+      "floor": 1
+    },
+    {
+      "id": "011006",
+      "name": "A 206",
+      "type": "room",
+      "block": "Block A",
+      "blockIdx": 0,
+      "floor": 1
+    },
+    {
+      "id": "011007",
+      "name": "A 207",
+      "type": "room",
+      "block": "Block A",
+      "blockIdx": 0,
+      "floor": 1
+    },
+    {
+      "id": "011008",
+      "name": "A 208",
+      "type": "room",
+      "block": "Block A",
+      "blockIdx": 0,
+      "floor": 1
+    },
+    {
+      "id": "011009",
+      "name": "A 209",
+      "type": "room",
+      "block": "Block A",
+      "blockIdx": 0,
+      "floor": 1
+    },
+    {
+      "id": "011010",
+      "name": "A 210",
+      "type": "room",
+      "block": "Block A",
+      "blockIdx": 0,
+      "floor": 1
+    },
+    {
+      "id": "011011",
+      "name": "A 211",
+      "type": "room",
+      "block": "Block A",
+      "blockIdx": 0,
+      "floor": 1
+    },
+    {
+      "id": "011012",
+      "name": "A 212",
+      "type": "room",
+      "block": "Block A",
+      "blockIdx": 0,
+      "floor": 1
+    },
+    {
+      "id": "011013",
+      "name": "Washroom(A1)",
+      "type": "washroom",
+      "block": "Block A",
+      "blockIdx": 0,
+      "floor": 1
+    },
+    {
+      "id": "012001",
+      "name": "A 301",
+      "type": "room",
+      "block": "Block A",
+      "blockIdx": 0,
+      "floor": 2
+    },
+    {
+      "id": "012002",
+      "name": "A 302",
+      "type": "room",
+      "block": "Block A",
+      "blockIdx": 0,
+      "floor": 2
+    },
+    {
+      "id": "012003",
+      "name": "A 303",
+      "type": "room",
+      "block": "Block A",
+      "blockIdx": 0,
+      "floor": 2
+    },
+    {
+      "id": "012004",
+      "name": "A 304",
+      "type": "room",
+      "block": "Block A",
+      "blockIdx": 0,
+      "floor": 2
+    },
+    {
+      "id": "012005",
+      "name": "A 305",
+      "type": "room",
+      "block": "Block A",
+      "blockIdx": 0,
+      "floor": 2
+    },
+    {
+      "id": "012006",
+      "name": "A 306",
+      "type": "room",
+      "block": "Block A",
+      "blockIdx": 0,
+      "floor": 2
+    },
+    {
+      "id": "012007",
+      "name": "A 307",
+      "type": "room",
+      "block": "Block A",
+      "blockIdx": 0,
+      "floor": 2
+    },
+    {
+      "id": "012008",
+      "name": "A 308",
+      "type": "room",
+      "block": "Block A",
+      "blockIdx": 0,
+      "floor": 2
+    },
+    {
+      "id": "012009",
+      "name": "A 309",
+      "type": "room",
+      "block": "Block A",
+      "blockIdx": 0,
+      "floor": 2
+    },
+    {
+      "id": "012010",
+      "name": "A 310",
+      "type": "room",
+      "block": "Block A",
+      "blockIdx": 0,
+      "floor": 2
+    },
+    {
+      "id": "012011",
+      "name": "A 311",
+      "type": "room",
+      "block": "Block A",
+      "blockIdx": 0,
+      "floor": 2
+    },
+    {
+      "id": "012012",
+      "name": "A 312",
+      "type": "room",
+      "block": "Block A",
+      "blockIdx": 0,
+      "floor": 2
+    },
+    {
+      "id": "012013",
+      "name": "Washroom(A3)",
+      "type": "washroom",
+      "block": "Block A",
+      "blockIdx": 0,
+      "floor": 2
+    },
+    {
+      "id": "013001",
+      "name": "A 401",
+      "type": "room",
+      "block": "Block A",
+      "blockIdx": 0,
+      "floor": 3
+    },
+    {
+      "id": "013002",
+      "name": "A 402",
+      "type": "room",
+      "block": "Block A",
+      "blockIdx": 0,
+      "floor": 3
+    },
+    {
+      "id": "013003",
+      "name": "A 403",
+      "type": "room",
+      "block": "Block A",
+      "blockIdx": 0,
+      "floor": 3
+    },
+    {
+      "id": "013004",
+      "name": "A 404",
+      "type": "room",
+      "block": "Block A",
+      "blockIdx": 0,
+      "floor": 3
+    },
+    {
+      "id": "013005",
+      "name": "A 405",
+      "type": "room",
+      "block": "Block A",
+      "blockIdx": 0,
+      "floor": 3
+    },
+    {
+      "id": "013006",
+      "name": "A 406",
+      "type": "room",
+      "block": "Block A",
+      "blockIdx": 0,
+      "floor": 3
+    },
+    {
+      "id": "013007",
+      "name": "A 407",
+      "type": "room",
+      "block": "Block A",
+      "blockIdx": 0,
+      "floor": 3
+    },
+    {
+      "id": "013008",
+      "name": "A 408",
+      "type": "room",
+      "block": "Block A",
+      "blockIdx": 0,
+      "floor": 3
+    },
+    {
+      "id": "013009",
+      "name": "A 409",
+      "type": "room",
+      "block": "Block A",
+      "blockIdx": 0,
+      "floor": 3
+    },
+    {
+      "id": "013010",
+      "name": "A 410",
+      "type": "room",
+      "block": "Block A",
+      "blockIdx": 0,
+      "floor": 3
+    },
+    {
+      "id": "013011",
+      "name": "A 411",
+      "type": "room",
+      "block": "Block A",
+      "blockIdx": 0,
+      "floor": 3
+    },
+    {
+      "id": "013012",
+      "name": "A 412",
+      "type": "room",
+      "block": "Block A",
+      "blockIdx": 0,
+      "floor": 3
+    },
+    {
+      "id": "013013",
+      "name": "Washroom(A4)",
+      "type": "washroom",
+      "block": "Block A",
+      "blockIdx": 0,
+      "floor": 3
+    },
+    {
+      "id": "020001",
+      "name": "B 101",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 0
+    },
+    {
+      "id": "020002",
+      "name": "B 102",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 0
+    },
+    {
+      "id": "020003",
+      "name": "B 103",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 0
+    },
+    {
+      "id": "020004",
+      "name": "B 104",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 0
+    },
+    {
+      "id": "020005",
+      "name": "B 105",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 0
+    },
+    {
+      "id": "020006",
+      "name": "B 106",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 0
+    },
+    {
+      "id": "020007",
+      "name": "B 107",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 0
+    },
+    {
+      "id": "020008",
+      "name": "B 108",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 0
+    },
+    {
+      "id": "020009",
+      "name": "B 109",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 0
+    },
+    {
+      "id": "020010",
+      "name": "B 110",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 0
+    },
+    {
+      "id": "020011",
+      "name": "B 111",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 0
+    },
+    {
+      "id": "020012",
+      "name": "B 112",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 0
+    },
+    {
+      "id": "020013",
+      "name": "Washroom(B0)",
+      "type": "washroom",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 0
+    },
+    {
+      "id": "020014",
+      "name": "B 113",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 0
+    },
+    {
+      "id": "020015",
+      "name": "B 114",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 0
+    },
+    {
+      "id": "020016",
+      "name": "B 115",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 0
+    },
+    {
+      "id": "020017",
+      "name": "B 116",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 0
+    },
+    {
+      "id": "020018",
+      "name": "B 117",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 0
+    },
+    {
+      "id": "020019",
+      "name": "B 118",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 0
+    },
+    {
+      "id": "020020",
+      "name": "B 119",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 0
+    },
+    {
+      "id": "020021",
+      "name": "B 120",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 0
+    },
+    {
+      "id": "020022",
+      "name": "B 121",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 0
+    },
+    {
+      "id": "020023",
+      "name": "B 122",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 0
+    },
+    {
+      "id": "020024",
+      "name": "B 123",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 0
+    },
+    {
+      "id": "020025",
+      "name": "B 124",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 0
+    },
+    {
+      "id": "020026",
+      "name": "Hall ",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 0
+    },
+    {
+      "id": "020027",
+      "name": "utility shop",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 0
+    },
+    {
+      "id": "020028",
+      "name": "Mess",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 0
+    },
+    {
+      "id": "021001",
+      "name": "B 201",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 1
+    },
+    {
+      "id": "021002",
+      "name": "B 202",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 1
+    },
+    {
+      "id": "021003",
+      "name": "B 203",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 1
+    },
+    {
+      "id": "021004",
+      "name": "B 204",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 1
+    },
+    {
+      "id": "021005",
+      "name": "B 205",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 1
+    },
+    {
+      "id": "021006",
+      "name": "B 206",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 1
+    },
+    {
+      "id": "021007",
+      "name": "B 207",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 1
+    },
+    {
+      "id": "021008",
+      "name": "B 208",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 1
+    },
+    {
+      "id": "021009",
+      "name": "B 209",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 1
+    },
+    {
+      "id": "021010",
+      "name": "B 210",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 1
+    },
+    {
+      "id": "021011",
+      "name": "B 211",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 1
+    },
+    {
+      "id": "021012",
+      "name": "B 212",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 1
+    },
+    {
+      "id": "021013",
+      "name": "Washroom(B1)",
+      "type": "washroom",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 1
+    },
+    {
+      "id": "021014",
+      "name": "B 213",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 1
+    },
+    {
+      "id": "021015",
+      "name": "B 214",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 1
+    },
+    {
+      "id": "021016",
+      "name": "B 215",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 1
+    },
+    {
+      "id": "021017",
+      "name": "B 216",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 1
+    },
+    {
+      "id": "021018",
+      "name": "B 217",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 1
+    },
+    {
+      "id": "021019",
+      "name": "B 218",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 1
+    },
+    {
+      "id": "021020",
+      "name": "B 219",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 1
+    },
+    {
+      "id": "021021",
+      "name": "B 220",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 1
+    },
+    {
+      "id": "021022",
+      "name": "B 221",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 1
+    },
+    {
+      "id": "021023",
+      "name": "B 222",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 1
+    },
+    {
+      "id": "021024",
+      "name": "B 223",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 1
+    },
+    {
+      "id": "021025",
+      "name": "B 224",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 1
+    },
+    {
+      "id": "021026",
+      "name": "Music Room",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 1
+    },
+    {
+      "id": "022001",
+      "name": "B 301",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 2
+    },
+    {
+      "id": "022002",
+      "name": "B 302",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 2
+    },
+    {
+      "id": "022003",
+      "name": "B 303",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 2
+    },
+    {
+      "id": "022004",
+      "name": "B 304",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 2
+    },
+    {
+      "id": "022005",
+      "name": "B 305",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 2
+    },
+    {
+      "id": "022006",
+      "name": "B 306",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 2
+    },
+    {
+      "id": "022007",
+      "name": "B 307",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 2
+    },
+    {
+      "id": "022008",
+      "name": "B 308",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 2
+    },
+    {
+      "id": "022009",
+      "name": "B 309",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 2
+    },
+    {
+      "id": "022010",
+      "name": "B 310",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 2
+    },
+    {
+      "id": "022011",
+      "name": "B 311",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 2
+    },
+    {
+      "id": "022012",
+      "name": "B 312",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 2
+    },
+    {
+      "id": "022013",
+      "name": "Washroom(B2)",
+      "type": "washroom",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 2
+    },
+    {
+      "id": "022014",
+      "name": "B 313",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 2
+    },
+    {
+      "id": "022015",
+      "name": "B 314",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 2
+    },
+    {
+      "id": "022016",
+      "name": "B 315",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 2
+    },
+    {
+      "id": "022017",
+      "name": "B 316",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 2
+    },
+    {
+      "id": "022018",
+      "name": "B 317",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 2
+    },
+    {
+      "id": "022019",
+      "name": "B 318",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 2
+    },
+    {
+      "id": "022020",
+      "name": "B 319",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 2
+    },
+    {
+      "id": "022021",
+      "name": "B 320",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 2
+    },
+    {
+      "id": "022022",
+      "name": "B 321",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 2
+    },
+    {
+      "id": "022023",
+      "name": "B 322",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 2
+    },
+    {
+      "id": "022024",
+      "name": "B 323",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 2
+    },
+    {
+      "id": "022025",
+      "name": "B 324",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 2
+    },
+    {
+      "id": "022026",
+      "name": "Library",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 2
+    },
+    {
+      "id": "023001",
+      "name": "B 401",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 3
+    },
+    {
+      "id": "023002",
+      "name": "B 402",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 3
+    },
+    {
+      "id": "023003",
+      "name": "B 403",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 3
+    },
+    {
+      "id": "023004",
+      "name": "B 404",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 3
+    },
+    {
+      "id": "023005",
+      "name": "B 405",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 3
+    },
+    {
+      "id": "023006",
+      "name": "B 406",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 3
+    },
+    {
+      "id": "023007",
+      "name": "B 407",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 3
+    },
+    {
+      "id": "023008",
+      "name": "B 408",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 3
+    },
+    {
+      "id": "023009",
+      "name": "B 409",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 3
+    },
+    {
+      "id": "023010",
+      "name": "B 410",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 3
+    },
+    {
+      "id": "023011",
+      "name": "B 411",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 3
+    },
+    {
+      "id": "023012",
+      "name": "B 412",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 3
+    },
+    {
+      "id": "023013",
+      "name": "Washroom(B4)",
+      "type": "washroom",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 3
+    },
+    {
+      "id": "023014",
+      "name": "B 413",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 3
+    },
+    {
+      "id": "023015",
+      "name": "B 414",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 3
+    },
+    {
+      "id": "023016",
+      "name": "B 415",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 3
+    },
+    {
+      "id": "023017",
+      "name": "B 416",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 3
+    },
+    {
+      "id": "023018",
+      "name": "B 417",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 3
+    },
+    {
+      "id": "023019",
+      "name": "B 418",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 3
+    },
+    {
+      "id": "023020",
+      "name": "B 419",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 3
+    },
+    {
+      "id": "023021",
+      "name": "B 420",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 3
+    },
+    {
+      "id": "023022",
+      "name": "B 421",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 3
+    },
+    {
+      "id": "023023",
+      "name": "B 422",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 3
+    },
+    {
+      "id": "023024",
+      "name": "B 423",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 3
+    },
+    {
+      "id": "023025",
+      "name": "B 424",
+      "type": "room",
+      "block": "Block B",
+      "blockIdx": 1,
+      "floor": 3
+    }
+  ],
+  "edges": [
+    {
+      "from": "010002",
+      "to": "010003",
+      "weight": 5
+    },
+    {
+      "from": "010003",
+      "to": "010004",
+      "weight": 5
+    },
+    {
+      "from": "010004",
+      "to": "010005",
+      "weight": 5
+    },
+    {
+      "from": "010005",
+      "to": "010006",
+      "weight": 5
+    },
+    {
+      "from": "010006",
+      "to": "010007",
+      "weight": 5
+    },
+    {
+      "from": "010007",
+      "to": "010009",
+      "weight": 5
+    },
+    {
+      "from": "010009",
+      "to": "010008",
+      "weight": 5
+    },
+    {
+      "from": "010008",
+      "to": "010010",
+      "weight": 5
+    },
+    {
+      "from": "010010",
+      "to": "010011",
+      "weight": 5
+    },
+    {
+      "from": "010011",
+      "to": "010012",
+      "weight": 5
+    },
+    {
+      "from": "010012",
+      "to": "010013",
+      "weight": 5
+    },
+    {
+      "from": "010013",
+      "to": "010014",
+      "weight": 5
+    },
+    {
+      "from": "011001",
+      "to": "011002",
+      "weight": 5
+    },
+    {
+      "from": "011002",
+      "to": "011003",
+      "weight": 5
+    },
+    {
+      "from": "011003",
+      "to": "011004",
+      "weight": 5
+    },
+    {
+      "from": "011004",
+      "to": "011005",
+      "weight": 5
+    },
+    {
+      "from": "011005",
+      "to": "011006",
+      "weight": 5
+    },
+    {
+      "from": "011006",
+      "to": "011007",
+      "weight": 5
+    },
+    {
+      "from": "011007",
+      "to": "011008",
+      "weight": 5
+    },
+    {
+      "from": "011008",
+      "to": "011009",
+      "weight": 5
+    },
+    {
+      "from": "011009",
+      "to": "011010",
+      "weight": 5
+    },
+    {
+      "from": "011010",
+      "to": "011011",
+      "weight": 5
+    },
+    {
+      "from": "011011",
+      "to": "011012",
+      "weight": 5
+    },
+    {
+      "from": "011012",
+      "to": "011013",
+      "weight": 5
+    },
+    {
+      "from": "012001",
+      "to": "012002",
+      "weight": 5
+    },
+    {
+      "from": "012002",
+      "to": "012003",
+      "weight": 5
+    },
+    {
+      "from": "012003",
+      "to": "012004",
+      "weight": 5
+    },
+    {
+      "from": "012004",
+      "to": "012005",
+      "weight": 5
+    },
+    {
+      "from": "012005",
+      "to": "012006",
+      "weight": 5
+    },
+    {
+      "from": "012006",
+      "to": "012007",
+      "weight": 5
+    },
+    {
+      "from": "012007",
+      "to": "012008",
+      "weight": 5
+    },
+    {
+      "from": "012008",
+      "to": "012009",
+      "weight": 5
+    },
+    {
+      "from": "012009",
+      "to": "012010",
+      "weight": 5
+    },
+    {
+      "from": "012010",
+      "to": "012011",
+      "weight": 5
+    },
+    {
+      "from": "012011",
+      "to": "012012",
+      "weight": 5
+    },
+    {
+      "from": "012012",
+      "to": "012013",
+      "weight": 5
+    },
+    {
+      "from": "013001",
+      "to": "013002",
+      "weight": 5
+    },
+    {
+      "from": "013002",
+      "to": "013003",
+      "weight": 5
+    },
+    {
+      "from": "013003",
+      "to": "013004",
+      "weight": 5
+    },
+    {
+      "from": "013004",
+      "to": "013005",
+      "weight": 5
+    },
+    {
+      "from": "013005",
+      "to": "013006",
+      "weight": 5
+    },
+    {
+      "from": "013006",
+      "to": "013007",
+      "weight": 5
+    },
+    {
+      "from": "013007",
+      "to": "013008",
+      "weight": 5
+    },
+    {
+      "from": "013008",
+      "to": "013009",
+      "weight": 5
+    },
+    {
+      "from": "013009",
+      "to": "013010",
+      "weight": 5
+    },
+    {
+      "from": "013010",
+      "to": "013011",
+      "weight": 5
+    },
+    {
+      "from": "013011",
+      "to": "013012",
+      "weight": 5
+    },
+    {
+      "from": "013012",
+      "to": "013013",
+      "weight": 5
+    },
+    {
+      "from": "020001",
+      "to": "020002",
+      "weight": 5
+    },
+    {
+      "from": "020002",
+      "to": "020003",
+      "weight": 5
+    },
+    {
+      "from": "020003",
+      "to": "020004",
+      "weight": 5
+    },
+    {
+      "from": "020004",
+      "to": "020005",
+      "weight": 5
+    },
+    {
+      "from": "020005",
+      "to": "020006",
+      "weight": 5
+    },
+    {
+      "from": "020006",
+      "to": "020007",
+      "weight": 5
+    },
+    {
+      "from": "020007",
+      "to": "020008",
+      "weight": 5
+    },
+    {
+      "from": "020008",
+      "to": "020009",
+      "weight": 5
+    },
+    {
+      "from": "020009",
+      "to": "020010",
+      "weight": 5
+    },
+    {
+      "from": "020010",
+      "to": "020011",
+      "weight": 5
+    },
+    {
+      "from": "020011",
+      "to": "020012",
+      "weight": 5
+    },
+    {
+      "from": "020012",
+      "to": "020013",
+      "weight": 5
+    },
+    {
+      "from": "020013",
+      "to": "020014",
+      "weight": 5
+    },
+    {
+      "from": "020014",
+      "to": "020015",
+      "weight": 5
+    },
+    {
+      "from": "020015",
+      "to": "020016",
+      "weight": 5
+    },
+    {
+      "from": "020016",
+      "to": "020017",
+      "weight": 5
+    },
+    {
+      "from": "020017",
+      "to": "020018",
+      "weight": 5
+    },
+    {
+      "from": "020018",
+      "to": "020019",
+      "weight": 5
+    },
+    {
+      "from": "020019",
+      "to": "020020",
+      "weight": 5
+    },
+    {
+      "from": "020020",
+      "to": "020021",
+      "weight": 5
+    },
+    {
+      "from": "020021",
+      "to": "020022",
+      "weight": 5
+    },
+    {
+      "from": "020022",
+      "to": "020023",
+      "weight": 5
+    },
+    {
+      "from": "020023",
+      "to": "020024",
+      "weight": 5
+    },
+    {
+      "from": "020024",
+      "to": "020025",
+      "weight": 5
+    },
+    {
+      "from": "020025",
+      "to": "020026",
+      "weight": 5
+    },
+    {
+      "from": "021001",
+      "to": "021002",
+      "weight": 5
+    },
+    {
+      "from": "021002",
+      "to": "021003",
+      "weight": 5
+    },
+    {
+      "from": "021003",
+      "to": "021004",
+      "weight": 5
+    },
+    {
+      "from": "021004",
+      "to": "021005",
+      "weight": 5
+    },
+    {
+      "from": "021005",
+      "to": "021006",
+      "weight": 5
+    },
+    {
+      "from": "021006",
+      "to": "021007",
+      "weight": 5
+    },
+    {
+      "from": "021007",
+      "to": "021008",
+      "weight": 5
+    },
+    {
+      "from": "021008",
+      "to": "021009",
+      "weight": 5
+    },
+    {
+      "from": "021009",
+      "to": "021010",
+      "weight": 5
+    },
+    {
+      "from": "021010",
+      "to": "021011",
+      "weight": 5
+    },
+    {
+      "from": "021011",
+      "to": "021012",
+      "weight": 5
+    },
+    {
+      "from": "021012",
+      "to": "021013",
+      "weight": 5
+    },
+    {
+      "from": "021013",
+      "to": "021014",
+      "weight": 5
+    },
+    {
+      "from": "021014",
+      "to": "021015",
+      "weight": 5
+    },
+    {
+      "from": "021015",
+      "to": "021016",
+      "weight": 5
+    },
+    {
+      "from": "021016",
+      "to": "021017",
+      "weight": 5
+    },
+    {
+      "from": "021017",
+      "to": "021018",
+      "weight": 5
+    },
+    {
+      "from": "021018",
+      "to": "021019",
+      "weight": 5
+    },
+    {
+      "from": "021019",
+      "to": "021020",
+      "weight": 5
+    },
+    {
+      "from": "021020",
+      "to": "021021",
+      "weight": 5
+    },
+    {
+      "from": "021021",
+      "to": "021022",
+      "weight": 5
+    },
+    {
+      "from": "021022",
+      "to": "021023",
+      "weight": 5
+    },
+    {
+      "from": "021023",
+      "to": "021024",
+      "weight": 5
+    },
+    {
+      "from": "021024",
+      "to": "021025",
+      "weight": 5
+    },
+    {
+      "from": "021025",
+      "to": "021026",
+      "weight": 5
+    },
+    {
+      "from": "022001",
+      "to": "022002",
+      "weight": 5
+    },
+    {
+      "from": "022002",
+      "to": "022003",
+      "weight": 5
+    },
+    {
+      "from": "022003",
+      "to": "022004",
+      "weight": 5
+    },
+    {
+      "from": "022004",
+      "to": "022005",
+      "weight": 5
+    },
+    {
+      "from": "022005",
+      "to": "022006",
+      "weight": 5
+    },
+    {
+      "from": "022006",
+      "to": "022007",
+      "weight": 5
+    },
+    {
+      "from": "022007",
+      "to": "022008",
+      "weight": 5
+    },
+    {
+      "from": "022008",
+      "to": "022009",
+      "weight": 5
+    },
+    {
+      "from": "022009",
+      "to": "022010",
+      "weight": 5
+    },
+    {
+      "from": "022010",
+      "to": "022011",
+      "weight": 5
+    },
+    {
+      "from": "022011",
+      "to": "022012",
+      "weight": 5
+    },
+    {
+      "from": "022012",
+      "to": "022013",
+      "weight": 5
+    },
+    {
+      "from": "022013",
+      "to": "022014",
+      "weight": 5
+    },
+    {
+      "from": "022014",
+      "to": "022015",
+      "weight": 5
+    },
+    {
+      "from": "022015",
+      "to": "022016",
+      "weight": 5
+    },
+    {
+      "from": "022016",
+      "to": "022017",
+      "weight": 5
+    },
+    {
+      "from": "022017",
+      "to": "022018",
+      "weight": 5
+    },
+    {
+      "from": "022018",
+      "to": "022019",
+      "weight": 5
+    },
+    {
+      "from": "022019",
+      "to": "022020",
+      "weight": 5
+    },
+    {
+      "from": "022020",
+      "to": "022021",
+      "weight": 5
+    },
+    {
+      "from": "022021",
+      "to": "022022",
+      "weight": 5
+    },
+    {
+      "from": "022022",
+      "to": "022023",
+      "weight": 5
+    },
+    {
+      "from": "022023",
+      "to": "022024",
+      "weight": 5
+    },
+    {
+      "from": "022024",
+      "to": "022025",
+      "weight": 5
+    },
+    {
+      "from": "022025",
+      "to": "022026",
+      "weight": 5
+    },
+    {
+      "from": "023001",
+      "to": "023002",
+      "weight": 5
+    },
+    {
+      "from": "023002",
+      "to": "023003",
+      "weight": 5
+    },
+    {
+      "from": "023003",
+      "to": "023004",
+      "weight": 5
+    },
+    {
+      "from": "023004",
+      "to": "023005",
+      "weight": 5
+    },
+    {
+      "from": "023005",
+      "to": "023006",
+      "weight": 5
+    },
+    {
+      "from": "023006",
+      "to": "023007",
+      "weight": 5
+    },
+    {
+      "from": "023007",
+      "to": "023008",
+      "weight": 5
+    },
+    {
+      "from": "023008",
+      "to": "023009",
+      "weight": 5
+    },
+    {
+      "from": "023009",
+      "to": "023010",
+      "weight": 5
+    },
+    {
+      "from": "023010",
+      "to": "023011",
+      "weight": 5
+    },
+    {
+      "from": "023011",
+      "to": "023012",
+      "weight": 5
+    },
+    {
+      "from": "023012",
+      "to": "023013",
+      "weight": 5
+    },
+    {
+      "from": "023013",
+      "to": "023014",
+      "weight": 5
+    },
+    {
+      "from": "023014",
+      "to": "023015",
+      "weight": 5
+    },
+    {
+      "from": "023015",
+      "to": "023016",
+      "weight": 5
+    },
+    {
+      "from": "023016",
+      "to": "023017",
+      "weight": 5
+    },
+    {
+      "from": "023017",
+      "to": "023018",
+      "weight": 5
+    },
+    {
+      "from": "023018",
+      "to": "023019",
+      "weight": 5
+    },
+    {
+      "from": "023019",
+      "to": "023020",
+      "weight": 5
+    },
+    {
+      "from": "023020",
+      "to": "023021",
+      "weight": 5
+    },
+    {
+      "from": "023021",
+      "to": "023022",
+      "weight": 5
+    },
+    {
+      "from": "023022",
+      "to": "023023",
+      "weight": 5
+    },
+    {
+      "from": "023023",
+      "to": "023024",
+      "weight": 5
+    },
+    {
+      "from": "023024",
+      "to": "023025",
+      "weight": 5
+    },
+    {
+      "from": "010014",
+      "to": "011013",
+      "weight": 5,
+      "type": "staircase"
+    },
+    {
+      "from": "011013",
+      "to": "012013",
+      "weight": 5,
+      "type": "staircase"
+    },
+    {
+      "from": "012013",
+      "to": "013013",
+      "weight": 5,
+      "type": "staircase"
+    },
+    {
+      "from": "010014",
+      "to": "020013",
+      "weight": 20,
+      "type": "corridor"
+    },
+    {
+      "from": "011013",
+      "to": "021013",
+      "weight": 5,
+      "type": "corridor"
+    },
+    {
+      "from": "020013",
+      "to": "021013",
+      "weight": 5,
+      "type": "staircase"
+    },
+    {
+      "from": "020025",
+      "to": "021025",
+      "weight": 5,
+      "type": "staircase"
+    },
+    {
+      "from": "010017",
+      "to": "020026",
+      "weight": 5,
+      "type": "corridor"
+    },
+    {
+      "from": "010001",
+      "to": "010017",
+      "weight": 20,
+      "type": "corridor"
+    },
+    {
+      "from": "021013",
+      "to": "022013",
+      "weight": 5,
+      "type": "staircase"
+    },
+    {
+      "from": "021025",
+      "to": "022025",
+      "weight": 5,
+      "type": "staircase"
+    },
+    {
+      "from": "022013",
+      "to": "023013",
+      "weight": 5,
+      "type": "staircase"
+    },
+    {
+      "from": "022025",
+      "to": "023025",
+      "weight": 5,
+      "type": "staircase"
+    }
+  ],
+  "nodeCount": 159,
+  "edgeCount": 160,
+  "specials": [
+    {
+      "id": "010001",
+      "name": "main gate",
+      "type": "entrance"
+    },
+    {
+      "id": "010002",
+      "name": "Conference room",
+      "type": "office"
+    },
+    {
+      "id": "010003",
+      "name": "Hall Office",
+      "type": "office"
+    },
+    {
+      "id": "010017",
+      "name": "common room",
+      "type": "room"
+    },
+    {
+      "id": "021026",
+      "name": "Music Room",
+      "type": "room"
+    },
+    {
+      "id": "022026",
+      "name": "Library",
+      "type": "room"
+    }
+  ]
+}

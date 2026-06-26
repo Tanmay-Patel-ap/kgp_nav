@@ -1,0 +1,2115 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Indoor Data Editor — KGP Navigator</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap"
+    rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0a0e14;
+      --surface: #111720;
+      --surface2: #18202c;
+      --surface3: #1e2838;
+      --border: #232e3f;
+      --border2: #2c3a4f;
+      --accent: #4f8ef7;
+      --accent-dim: rgba(79, 142, 247, 0.12);
+      --accent2: #34d399;
+      --warn: #f59e0b;
+      --danger: #ef4444;
+      --text: #cdd6e4;
+      --text-sub: #7a90a8;
+      --text-dim: #2e3f52;
+      --radius: 10px;
+      --radius-sm: 6px;
+      --tr: 0.18s ease;
+      --font-ui: 'Inter', sans-serif;
+      --font-mono: 'Space Mono', monospace;
+    }
+
+    [data-theme="light"] {
+      --bg: #eef2f7;
+      --surface: #ffffff;
+      --surface2: #f4f7fb;
+      --surface3: #e8edf5;
+      --border: #dde3ed;
+      --border2: #c8d2e0;
+      --accent: #2563eb;
+      --accent-dim: rgba(37, 99, 235, 0.08);
+      --accent2: #059669;
+      --warn: #d97706;
+      --danger: #dc2626;
+      --text: #1a2535;
+      --text-sub: #5a6e85;
+      --text-dim: #b0bcc8;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: var(--font-ui);
+      font-size: 13px;
+      background: var(--bg);
+      color: var(--text)
+    }
+
+    /* ── LAYOUT ─────────────────────────────── */
+    #app {
+      display: flex;
+      flex-direction: column;
+      height: 100vh
+    }
+
+    #toolbar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      flex-shrink: 0
+    }
+
+    #toolbar h1 {
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: -0.01em
+    }
+
+    #toolbar .spacer {
+      flex: 1
+    }
+
+    #main {
+      display: flex;
+      flex: 1;
+      overflow: hidden
+    }
+
+    /* ── LEFT PANEL (config) ────────────────── */
+    #left-panel {
+      width: 280px;
+      min-width: 280px;
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
+      padding: 16px;
+      flex-shrink: 0
+    }
+
+    #left-panel h3 {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-sub);
+      margin-bottom: 10px;
+      font-family: var(--font-mono)
+    }
+
+    .field {
+      margin-bottom: 12px
+    }
+
+    .field label {
+      display: block;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--text-sub);
+      margin-bottom: 4px;
+      font-family: var(--font-mono)
+    }
+
+    .field input,
+    .field select {
+      width: 100%;
+      padding: 7px 10px;
+      background: var(--surface2);
+      border: 1px solid var(--border2);
+      border-radius: var(--radius-sm);
+      color: var(--text);
+      font-family: var(--font-ui);
+      font-size: 12px;
+      outline: none;
+      transition: all var(--tr)
+    }
+
+    .field input:focus,
+    .field select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px var(--accent-dim)
+    }
+
+    .field select {
+      cursor: pointer
+    }
+
+    .field select option {
+      background: var(--surface);
+      color: var(--text)
+    }
+
+    .radio-group {
+      display: flex;
+      gap: 12px;
+      margin-top: 4px
+    }
+
+    .radio-group label {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      color: var(--text);
+      cursor: pointer;
+      font-family: var(--font-ui);
+      letter-spacing: 0
+    }
+
+    .radio-group input[type="radio"] {
+      accent-color: var(--accent);
+      width: auto
+    }
+
+    /* ── CENTER (editor) ────────────────────── */
+    #center {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden
+    }
+
+    #level-tabs {
+      display: flex;
+      gap: 2px;
+      padding: 8px 16px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      flex-shrink: 0;
+      overflow-x: auto;
+      align-items: center
+    }
+
+    .level-tab {
+      padding: 6px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 11px;
+      font-weight: 500;
+      cursor: pointer;
+      border: 1px solid transparent;
+      color: var(--text-sub);
+      background: transparent;
+      transition: all var(--tr);
+      white-space: nowrap;
+      font-family: var(--font-ui)
+    }
+
+    .level-tab:hover {
+      color: var(--text);
+      background: var(--surface2)
+    }
+
+    .level-tab.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent)
+    }
+
+    .tab-add {
+      padding: 6px 10px;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      cursor: pointer;
+      border: 1px dashed var(--border2);
+      color: var(--text-sub);
+      background: transparent;
+      transition: all var(--tr);
+      line-height: 1
+    }
+
+    .tab-add:hover {
+      color: var(--accent);
+      border-color: var(--accent)
+    }
+
+    .tab-remove {
+      padding: 2px 6px;
+      border-radius: var(--radius-sm);
+      font-size: 11px;
+      cursor: pointer;
+      border: none;
+      color: var(--text-dim);
+      background: transparent;
+      margin-left: 4px
+    }
+
+    .tab-remove:hover {
+      color: var(--danger)
+    }
+
+    /* ── SUB-TABS (for block-wise floors) ───── */
+    #sub-tabs {
+      display: none;
+      gap: 2px;
+      padding: 6px 16px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      flex-shrink: 0;
+      overflow-x: auto;
+      align-items: center
+    }
+
+    #sub-tabs.visible {
+      display: flex
+    }
+
+    .sub-tab {
+      padding: 4px 10px;
+      border-radius: var(--radius-sm);
+      font-size: 10px;
+      font-weight: 500;
+      cursor: pointer;
+      border: 1px solid transparent;
+      color: var(--text-sub);
+      background: transparent;
+      transition: all var(--tr);
+      white-space: nowrap;
+      font-family: var(--font-mono)
+    }
+
+    .sub-tab:hover {
+      color: var(--text);
+      background: var(--surface2)
+    }
+
+    .sub-tab.active {
+      background: var(--surface3);
+      color: var(--accent);
+      border-color: var(--accent)
+    }
+
+    /* ── SECTION TABS (rooms/nodes/edges) ───── */
+    #section-tabs {
+      display: flex;
+      gap: 0;
+      padding: 0 16px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      flex-shrink: 0
+    }
+
+    .section-tab {
+      padding: 10px 16px;
+      font-size: 11px;
+      font-weight: 500;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      color: var(--text-sub);
+      background: transparent;
+      transition: all var(--tr);
+      font-family: var(--font-mono);
+      letter-spacing: 0.04em
+    }
+
+    .section-tab:hover {
+      color: var(--text)
+    }
+
+    .section-tab.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent)
+    }
+
+    /* ── TABLE ──────────────────────────────── */
+    #table-area {
+      flex: 1;
+      overflow: auto;
+      padding: 16px
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px
+    }
+
+    th {
+      text-align: left;
+      padding: 6px 8px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--text-sub);
+      font-family: var(--font-mono);
+      border-bottom: 1px solid var(--border2);
+      position: sticky;
+      top: 0;
+      background: var(--bg);
+      z-index: 1
+    }
+
+    td {
+      padding: 4px 6px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle
+    }
+
+    td input,
+    td select {
+      width: 100%;
+      padding: 5px 8px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--text);
+      font-size: 12px;
+      font-family: var(--font-ui);
+      outline: none;
+      transition: border-color var(--tr)
+    }
+
+    td input:focus,
+    td select:focus {
+      border-color: var(--accent)
+    }
+
+    td select {
+      cursor: pointer
+    }
+
+    td select option {
+      background: var(--surface);
+      color: var(--text)
+    }
+
+    .row-num {
+      color: var(--text-dim);
+      font-family: var(--font-mono);
+      font-size: 10px;
+      text-align: center;
+      width: 30px
+    }
+
+    .btn-del {
+      background: none;
+      border: none;
+      color: var(--text-dim);
+      cursor: pointer;
+      font-size: 14px;
+      padding: 2px 6px;
+      border-radius: 3px;
+      transition: all var(--tr)
+    }
+
+    .btn-del:hover {
+      color: var(--danger);
+      background: rgba(239, 68, 68, 0.1)
+    }
+
+    .btn-move {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text-sub);
+      cursor: pointer;
+      font-size: 9px;
+      padding: 1px 5px;
+      border-radius: 3px;
+      line-height: 1.2;
+      transition: all var(--tr)
+    }
+    .btn-move:hover:not(:disabled) {
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+    .btn-move:disabled {
+      opacity: 0.25;
+      cursor: default;
+    }
+
+    .btn-drag {
+      cursor: grab;
+      color: var(--text-dim);
+      font-size: 14px;
+      padding: 2px 8px;
+      border-radius: 3px;
+      user-select: none;
+      transition: color var(--tr), background var(--tr);
+      display: inline-block;
+      line-height: 1
+    }
+    .btn-drag:hover {
+      color: var(--accent);
+      background: var(--accent-dim);
+    }
+    .btn-drag:active {
+      cursor: grabbing
+    }
+    tr.dragging {
+      opacity: 0.4
+    }
+    tr.drag-over {
+      border-top: 2px solid var(--accent) !important
+    }
+
+    .autocomplete-dropdown {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: var(--surface);
+      border: 1px solid var(--border2);
+      border-radius: var(--radius-sm);
+      max-height: 200px;
+      overflow-y: auto;
+      margin-top: 2px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+    .autocomplete-dropdown.visible {
+      display: block;
+    }
+    .autocomplete-item {
+      padding: 7px 10px;
+      font-size: 12px;
+      cursor: pointer;
+      color: var(--text);
+      transition: background var(--tr);
+    }
+    .autocomplete-item:hover {
+      background: var(--accent-dim);
+    }
+
+    .dropdown-arrow-btn {
+      position: absolute;
+      right: 2px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: var(--text-sub);
+      cursor: pointer;
+      padding: 6px 8px;
+      font-size: 10px;
+      line-height: 1;
+      z-index: 1;
+    }
+    .dropdown-arrow-btn:hover {
+      color: var(--accent);
+    }
+
+    .table-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+      flex-wrap: wrap
+    }
+
+    /* ── RIGHT PANEL (preview) ──────────────── */
+    #right-panel {
+      width: 340px;
+      min-width: 340px;
+      border-left: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transition: all 0.2s ease;
+    }
+    #right-panel.hidden {
+      width: 0;
+      min-width: 0;
+      border-left: none;
+      overflow: hidden;
+    }
+
+    #expand-panel-btn {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      min-width: 22px;
+      border-left: 1px solid var(--border);
+      background: var(--surface);
+      cursor: pointer;
+      font-size: 10px;
+      color: var(--text-sub);
+      transition: color var(--tr);
+      user-select: none;
+    }
+    #expand-panel-btn:hover {
+      color: var(--accent);
+      background: var(--surface2);
+    }
+
+    #preview-header {
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between
+    }
+
+    #preview-header h3 {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-sub);
+      font-family: var(--font-mono)
+    }
+
+    #json-preview-wrapper {
+      flex: 1;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #json-preview {
+      flex: 1;
+      overflow: auto;
+      padding: 12px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      line-height: 1.5;
+      color: var(--text-sub);
+      white-space: pre-wrap;
+      word-break: break-all
+    }
+
+    /* ── BUTTONS ────────────────────────────── */
+    .btn {
+      padding: 6px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 11px;
+      font-weight: 500;
+      cursor: pointer;
+      border: 1px solid var(--border2);
+      color: var(--text-sub);
+      background: var(--surface2);
+      transition: all var(--tr);
+      font-family: var(--font-ui);
+      display: inline-flex;
+      align-items: center;
+      gap: 5px
+    }
+
+    .btn:hover {
+      color: var(--text);
+      border-color: var(--text-sub)
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent)
+    }
+
+    .btn-primary:hover {
+      opacity: 0.88
+    }
+
+    .btn-success {
+      background: var(--accent2);
+      color: #fff;
+      border-color: var(--accent2)
+    }
+
+    .btn-success:hover {
+      opacity: 0.88
+    }
+
+    .btn-danger {
+      border-color: var(--danger);
+      color: var(--danger)
+    }
+
+    .btn-danger:hover {
+      background: rgba(239, 68, 68, 0.1)
+    }
+
+    .btn-sm {
+      padding: 4px 10px;
+      font-size: 10px
+    }
+
+    .node-id-cell code {
+      background: var(--surface2);
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-size: 11px;
+      color: var(--accent);
+      white-space: nowrap;
+      font-family: monospace
+    }
+
+    /* ── STATUS BAR ─────────────────────────── */
+    #status-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      border-top: 1px solid var(--border);
+      background: var(--surface);
+      font-size: 11px;
+      color: var(--text-sub);
+      flex-shrink: 0
+    }
+
+    #status-bar .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent2);
+      flex-shrink: 0
+    }
+
+    /* ── MODAL ──────────────────────────────── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 5000;
+      display: flex;
+      align-items: center;
+      justify-content: center
+    }
+
+    .modal {
+      background: var(--surface);
+      border: 1px solid var(--border2);
+      border-radius: var(--radius);
+      padding: 20px;
+      min-width: 400px;
+      max-width: 500px;
+      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4)
+    }
+
+    .modal h3 {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 16px
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+      margin-top: 16px
+    }
+
+  </style>
+</head>
+
+<body>
+  <div id="app">
+
+    <!-- TOOLBAR -->
+    <div id="toolbar">
+      <h1>Indoor Data Editor</h1>
+      <span class="spacer"></span>
+      <button class="btn" onclick="toggleTheme()">Theme</button>
+      <button class="btn btn-primary" onclick="downloadSingle()">Download Graph</button>
+      <input type="file" id="scan-folder-input" webkitdirectory style="display:none" onchange="handleFolderScan(event)">
+    </div>
+
+    <div id="main">
+
+      <!-- LEFT PANEL -->
+      <div id="left-panel">
+        <div id="building-list-section">
+          <h3>Buildings</h3>
+          <button class="btn btn-sm" style="width:100%;margin-bottom:8px" onclick="selectIndoorFolder()">Select Indoor Folder</button>
+          <div id="available-section" style="display:none">
+            <div style="font-size:10px;color:var(--text-sub);font-family:var(--font-mono);text-transform:uppercase;margin-bottom:6px;letter-spacing:0.08em">Available</div>
+            <div id="available-list"></div>
+            <div style="height:1px;background:var(--border);margin:10px 0"></div>
+          </div>
+          <div style="font-size:10px;color:var(--text-sub);font-family:var(--font-mono);text-transform:uppercase;margin-bottom:6px;letter-spacing:0.08em;display:none" id="editing-label">Currently Editing</div>
+          <div id="building-list"></div>
+          <button class="btn btn-sm" style="margin-top:8px;width:100%" onclick="showNewBuildingModal()">+ New Building</button>
+        </div>
+
+        <div class="panel-divider" style="height:1px;background:var(--border);margin:16px 0"></div>
+
+        <div id="building-config" style="display:none">
+          <h3>Building Config</h3>
+          <div class="field">
+            <label>Building Name</label>
+            <input type="text" id="cfg-name" placeholder="Nehru Hall of Residence" oninput="onConfigChange()">
+          </div>
+          <div class="field">
+            <label>Slug (folder name)</label>
+            <input type="text" id="cfg-slug" placeholder="nehru_hall" oninput="onConfigChange()">
+          </div>
+          <div class="field">
+            <label>File Prefix</label>
+            <input type="text" id="cfg-prefix" placeholder="nhr" oninput="onConfigChange()">
+          </div>
+          <div class="field">
+            <label>Entrance Node (read-only)</label>
+            <input type="text" id="cfg-entrance" readonly style="color:var(--text-sub);cursor:default">
+          </div>
+          <div id="block-names-section">
+            <h3>Block Names</h3>
+            <div id="block-names-list"></div>
+            <button class="btn btn-sm" style="margin-top:8px" onclick="addBlockName()">+ Add Block</button>
+          </div>
+
+          <div class="panel-divider" style="height:1px;background:var(--border);margin:16px 0"></div>
+
+          <h3>Custom Columns</h3>
+          <div id="custom-columns-list"></div>
+          <button class="btn btn-sm" style="margin-top:8px" onclick="showAddColumnModal()">+ Add Column</button>
+
+        </div>
+      </div>
+
+      <!-- CENTER -->
+      <div id="center">
+        <div id="level-tabs"></div>
+        <div id="sub-tabs"></div>
+        <div id="section-tabs">
+          <div class="section-tab active" data-section="rooms" onclick="switchSection('rooms')">Rooms</div>
+          <div class="section-tab" data-section="edges" onclick="switchSection('edges')">Edges</div>
+          <div class="section-tab" data-section="connections" onclick="switchSection('connections')">Connections</div>
+        </div>
+        <div id="table-area">
+          <div id="empty-state" style="text-align:center;padding:60px 20px;color:var(--text-dim)">
+            <div style="font-size:32px;margin-bottom:12px">🏗️</div>
+            <div style="font-size:13px;margin-bottom:6px">No building selected</div>
+            <div style="font-size:11px">Click "New Building" or "Select Indoor Folder" to start</div>
+          </div>
+          <div id="table-content" style="display:none"></div>
+        </div>
+      </div>
+
+      <!-- RIGHT PANEL -->
+      <div id="right-panel">
+        <div id="preview-header">
+          <h3>JSON Preview</h3>
+          <div style="display:flex;gap:6px">
+            <button class="btn btn-sm" onclick="copyJson()">Copy</button>
+            <button class="btn btn-sm" id="collapse-preview-btn" onclick="togglePreviewCollapse()" title="Collapse/expand">▼</button>
+          </div>
+        </div>
+        <div id="json-preview-wrapper">
+          <div id="json-preview">// Select a building and level to preview JSON</div>
+        </div>
+      </div>
+      <div id="expand-panel-btn" onclick="togglePreviewCollapse()">◀</div>
+
+    </div>
+
+    <!-- STATUS BAR -->
+    <div id="status-bar">
+      <span class="dot"></span>
+      <span id="status-text">Ready — start a new building or select from available</span>
+    </div>
+
+  </div>
+
+  <!-- NEW BUILDING MODAL -->
+  <div class="modal-overlay" id="new-building-modal" style="display:none">
+    <div class="modal">
+      <h3>New Building</h3>
+      <div class="field" style="position:relative">
+        <label>Building Name</label>
+        <div style="position:relative">
+          <input type="text" id="new-name" placeholder="Nehru Hall of Residence" autocomplete="off" style="padding-right:28px">
+          <button id="new-name-arrow" type="button" onclick="showAllOutdoorBuildings()" class="dropdown-arrow-btn">▼</button>
+        </div>
+        <div class="autocomplete-dropdown" id="new-name-dropdown"></div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn" onclick="closeModal('new-building-modal')">Cancel</button>
+        <button class="btn btn-primary" onclick="createBuilding()">Create</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADD COLUMN MODAL -->
+  <div class="modal-overlay" id="add-column-modal" style="display:none">
+    <div class="modal">
+      <h3>Add Custom Column</h3>
+      <div class="field">
+        <label>Column Name</label>
+        <input type="text" id="new-col-name" placeholder="e.g. capacity, wifi, floor_area">
+      </div>
+      <div class="field">
+        <label>Default Value (optional)</label>
+        <input type="text" id="new-col-default" placeholder="e.g. 30">
+      </div>
+      <div class="modal-actions">
+        <button class="btn" onclick="closeModal('add-column-modal')">Cancel</button>
+        <button class="btn btn-primary" onclick="addColumn()">Add</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ═══════════════════════════════════════════════
+    // STATE
+    // ═══════════════════════════════════════════════
+    let state = {
+      buildings: [],          // [{name, slug, type, customColumns, levels/blocks, connections}]
+      currentBuilding: null,
+      currentLevel: 0,
+      currentSubLevel: 0,
+      currentSection: 'rooms',
+      previewCollapsed: false,
+      outdoorBuildings: [],
+      availableBuildings: [],
+    };
+
+    const ROOM_TYPES = ['room', 'classroom', 'lab', 'office', 'washroom', 'staircase', 'elevator', 'mess_hall', 'common_room', 'entrance', 'corridor', 'other'];
+    const CONN_TYPES = ['staircase', 'elevator', 'corridor', 'door'];
+    let newBuildingOutdoorId = '';
+    let newBuildingOutdoorIndex = null;
+
+    // ═══════════════════════════════════════════════
+    // INIT
+    // ═══════════════════════════════════════════════
+    (async function init() {
+      await loadOutdoorBuildings();
+      renderBuildingList();
+      renderAvailableBuildings();
+    })();
+
+    async function loadOutdoorBuildings() {
+      try {
+        const r = await fetch('http://127.0.0.1:8080/buildings');
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        state.outdoorBuildings = await r.json();
+        if (!Array.isArray(state.outdoorBuildings)) throw new Error('Invalid format');
+        console.log('[editor] Loaded ' + state.outdoorBuildings.length + ' outdoor buildings');
+      } catch (e) {
+        console.warn('[editor] loadOutdoorBuildings:', e.message);
+        setStatus('Could not load outdoor buildings — manual entry only');
+      }
+    }
+
+    // ═══════════════════════════════════════════════
+    // BUILDING LIST
+    // ═══════════════════════════════════════════════
+    function renderBuildingList() {
+      const el = document.getElementById('building-list');
+      el.innerHTML = '';
+      state.buildings.forEach((b, i) => {
+        const div = document.createElement('div');
+        div.style.cssText = 'display:flex;align-items:center;gap:6px;padding:6px 8px;border-radius:var(--radius-sm);cursor:pointer;margin-bottom:2px;transition:all var(--tr)';
+        div.style.background = state.currentBuilding === i ? 'var(--accent-dim)' : 'transparent';
+        div.style.border = state.currentBuilding === i ? '1px solid var(--accent)' : '1px solid transparent';
+        div.innerHTML = `<span style="flex:1;font-size:12px">${b.name}</span>
+      <button class="btn-del" onclick="event.stopPropagation();deleteBuilding(${i})" title="Delete">×</button>`;
+        div.onclick = () => selectBuilding(i);
+        el.appendChild(div);
+      });
+      document.getElementById('editing-label').style.display = state.buildings.length > 0 ? 'block' : 'none';
+    }
+
+    function selectIndoorFolder() {
+      document.getElementById('scan-folder-input').click();
+    }
+
+    function handleFolderScan(event) {
+      const files = event.target.files;
+      state.availableBuildings = [];
+      let count = 0;
+      const graphFiles = Array.from(files).filter(f => f.name.endsWith('_graph.json'));
+      if (graphFiles.length === 0) { setStatus('No graph files found in folder'); renderAvailableBuildings(); return; }
+      graphFiles.forEach(f => {
+        const reader = new FileReader();
+        reader.onload = e => {
+          try {
+            const g = JSON.parse(e.target.result);
+            const slug = String(g.id != null ? g.id : f.name.replace('_graph.json', ''));
+            state.availableBuildings.push({
+              name: g.name || slug,
+              slug,
+              prefix: g.prefix || slug,
+              graphData: g,
+            });
+          } catch (err) {}
+          count++;
+          if (count === graphFiles.length) { renderAvailableBuildings(); setStatus(`Found ${state.availableBuildings.length} buildings`); }
+        };
+        reader.readAsText(f);
+      });
+    }
+
+    function renderAvailableBuildings() {
+      const section = document.getElementById('available-section');
+      const list = document.getElementById('available-list');
+      list.innerHTML = '';
+      if (state.availableBuildings.length === 0) { section.style.display = 'none'; return; }
+      section.style.display = 'block';
+      state.availableBuildings.forEach((ab, i) => {
+        const div = document.createElement('div');
+        div.style.cssText = 'display:flex;align-items:center;gap:6px;padding:6px 8px;border-radius:var(--radius-sm);cursor:pointer;margin-bottom:2px;transition:all var(--tr);border:1px solid transparent';
+        div.innerHTML = `<span style="flex:1;font-size:12px">${esc(ab.name)}</span><span style="font-size:10px;color:var(--accent)">load</span>`;
+        div.onclick = () => loadAvailableBuilding(i);
+        div.onmouseenter = () => { div.style.background = 'var(--accent-dim)'; };
+        div.onmouseleave = () => { div.style.background = 'transparent'; };
+        list.appendChild(div);
+      });
+      document.getElementById('editing-label').style.display = state.buildings.length > 0 ? 'block' : 'none';
+    }
+
+    function loadAvailableBuilding(i) {
+      const ab = state.availableBuildings[i];
+      if (state.buildings.some(b => b.slug === ab.slug)) { setStatus(`"${ab.name}" already loaded`); return; }
+      importFromGraph(ab.graphData);
+      state.availableBuildings.splice(i, 1);
+      renderAvailableBuildings();
+      renderBuildingList();
+    }
+
+    function selectBuilding(i) {
+      state.currentBuilding = i;
+      state.currentLevel = 0;
+      state.currentSubLevel = 0;
+      state.currentSection = 'rooms';
+      document.getElementById('building-config').style.display = 'block';
+      loadBuildingConfig();
+      renderLevelTabs();
+      renderTable();
+      updatePreview();
+      renderBuildingList();
+    }
+
+    function deleteBuilding(i) {
+      if (!confirm(`Delete "${state.buildings[i].name}"?`)) return;
+      state.buildings.splice(i, 1);
+      if (state.currentBuilding === i) {
+        state.currentBuilding = null;
+        document.getElementById('building-config').style.display = 'none';
+        document.getElementById('level-tabs').innerHTML = '';
+        document.getElementById('sub-tabs').innerHTML = '';
+        document.getElementById('table-content').style.display = 'none';
+        document.getElementById('empty-state').style.display = 'block';
+        document.getElementById('json-preview').textContent = '// Select a building and level to preview JSON';
+      } else if (state.currentBuilding > i) {
+        state.currentBuilding--;
+      }
+      renderBuildingList();
+      setStatus('Building deleted');
+    }
+
+    // ═══════════════════════════════════════════════
+    // BUILDING CONFIG
+    // ═══════════════════════════════════════════════
+    function loadBuildingConfig() {
+      const b = state.buildings[state.currentBuilding];
+      document.getElementById('cfg-name').value = b.name;
+      document.getElementById('cfg-slug').value = b.slug;
+      document.getElementById('cfg-prefix').value = b.prefix || '';
+      document.getElementById('cfg-entrance').value = b.entranceNodeId || '—';
+      renderBlockNames();
+      renderCustomColumns();
+    }
+
+    function onConfigChange() {
+      const b = state.buildings[state.currentBuilding];
+      b.name = document.getElementById('cfg-name').value;
+      b.slug = document.getElementById('cfg-slug').value;
+      b.prefix = document.getElementById('cfg-prefix').value;
+      b.entranceNodeId = document.getElementById('cfg-entrance').value;
+      renderBuildingList();
+      updatePreview();
+    }
+
+    function makeEmptyFloor() {
+      return { rooms: [], edges: [] };
+    }
+
+    // ═══════════════════════════════════════════════
+    // BLOCK NAMES (block-wise)
+    // ═══════════════════════════════════════════════
+    function renderBlockNames() {
+      const b = state.buildings[state.currentBuilding];
+      if (!b.blocks) return;
+      const el = document.getElementById('block-names-list');
+      el.innerHTML = '';
+      b.blocks.forEach((bl, i) => {
+        const div = document.createElement('div');
+        div.style.cssText = 'display:flex;gap:4px;margin-bottom:4px;align-items:center';
+        div.innerHTML = `<button class="btn-move" onclick="moveBlock(${i},-1)"${i===0?' disabled':''}>▲</button>
+      <button class="btn-move" onclick="moveBlock(${i},1)"${i===b.blocks.length-1?' disabled':''}>▼</button>
+      <input type="text" value="${esc(bl.name)}" style="flex:1;padding:5px 8px;background:var(--surface2);border:1px solid var(--border2);border-radius:4px;color:var(--text);font-size:11px" oninput="renameBlock(${i},this.value)">
+      <button class="btn-del" onclick="removeBlock(${i})" title="Remove block">×</button>`;
+        el.appendChild(div);
+      });
+    }
+
+    function addBlockName() {
+      const b = state.buildings[state.currentBuilding];
+      const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      const name = 'Block ' + (letters[b.blocks.length] || b.blocks.length + 1);
+      b.blocks.push({ name, floors: [makeEmptyFloor()] });
+      renderBlockNames();
+      renderLevelTabs();
+      updatePreview();
+    }
+
+    function renameBlock(i, val) {
+      state.buildings[state.currentBuilding].blocks[i].name = val;
+      renderLevelTabs();
+      updatePreview();
+    }
+
+    function removeBlock(i) {
+      const b = state.buildings[state.currentBuilding];
+      if (b.blocks.length <= 1) return alert('Need at least one block');
+      const hasData = b.blocks[i].floors.some(f => floorHasData(f));
+      if (hasData && !confirm(`"${b.blocks[i].name}" has rooms/edges. Delete block and all its floors?`)) return;
+      b.blocks.splice(i, 1);
+      if (state.currentLevel >= b.blocks.length) state.currentLevel = b.blocks.length - 1;
+      recomputeAllIds();
+      renderBlockNames();
+      renderLevelTabs();
+      renderTable();
+      updatePreview();
+    }
+
+    // ═══════════════════════════════════════════════
+    // MOVE BLOCK / ROOM + ID RECOMPUTE
+    // ═══════════════════════════════════════════════
+    function moveBlock(i, dir) {
+      const b = state.buildings[state.currentBuilding];
+      const j = i + dir;
+      if (j < 0 || j >= b.blocks.length) return;
+      [b.blocks[i], b.blocks[j]] = [b.blocks[j], b.blocks[i]];
+      (b.connections || []).forEach(conn => {
+        conn.fromLevel = remapConnLevel(conn.fromLevel, i, j);
+        conn.toLevel   = remapConnLevel(conn.toLevel, i, j);
+      });
+      state.currentLevel = j;
+      recomputeAllIds();
+      renderBlockNames();
+      renderLevelTabs();
+      renderTable();
+      updatePreview();
+    }
+
+    function remapConnLevel(levelIdx, oldBi, newBi) {
+      const bi = Math.floor(levelIdx / 10);
+      if (bi === oldBi) return newBi * 10 + (levelIdx % 10);
+      if (bi === newBi) return oldBi * 10 + (levelIdx % 10);
+      return levelIdx;
+    }
+
+    function recomputeIdsForFloor(floor, bb, fi) {
+      const idMap = {};
+      (floor.rooms || []).forEach((room, ri) => {
+        const oldId = room.nodeId;
+        room.nodeId = bb + String(fi) + String(ri + 1).padStart(3, '0');
+        if (oldId) idMap[oldId] = room.nodeId;
+      });
+      (floor.edges || []).forEach(edge => {
+        if (idMap[edge.from]) edge.from = idMap[edge.from];
+        if (idMap[edge.to])   edge.to   = idMap[edge.to];
+      });
+    }
+
+    function recomputeAllIds() {
+      const b = state.buildings[state.currentBuilding];
+      if (!b) return;
+      b.blocks.forEach((bl, bi) => {
+        const bb = String(bi + 1).padStart(2, '0');
+        bl.floors.forEach((floor, fi) => recomputeIdsForFloor(floor, bb, fi));
+      });
+    }
+
+
+
+    // ═══════════════════════════════════════════════
+    // CUSTOM COLUMNS
+    // ═══════════════════════════════════════════════
+    function renderCustomColumns() {
+      const b = state.buildings[state.currentBuilding];
+      const el = document.getElementById('custom-columns-list');
+      if (!el) return;
+      el.innerHTML = '';
+      (b.customColumns || []).forEach((col, i) => {
+        const div = document.createElement('div');
+        div.style.cssText = 'display:flex;gap:6px;margin-bottom:4px;align-items:center';
+        div.innerHTML = `<span style="flex:1;font-size:12px;color:var(--text)">${esc(col.name)}</span>
+      <span style="font-size:10px;color:var(--dim)">default: ${esc(col.defaultValue || '—')}</span>
+      <button class="btn-del" onclick="removeColumn(${i})" title="Remove column">×</button>`;
+        el.appendChild(div);
+      });
+    }
+
+    function showAddColumnModal() {
+      document.getElementById('new-col-name').value = '';
+      document.getElementById('new-col-default').value = '';
+      document.getElementById('add-column-modal').style.display = 'flex';
+      document.getElementById('new-col-name').focus();
+    }
+
+    function addColumn() {
+      const name = document.getElementById('new-col-name').value.trim();
+      if (!name) return alert('Column name is required');
+      const defaultValue = document.getElementById('new-col-default').value.trim();
+      const b = state.buildings[state.currentBuilding];
+      if (!b.customColumns) b.customColumns = [];
+      if (b.customColumns.some(c => c.name === name)) return alert('Column already exists');
+      b.customColumns.push({ name, defaultValue });
+      closeModal('add-column-modal');
+      renderCustomColumns();
+      renderTable();
+      updatePreview();
+    }
+
+    function removeColumn(i) {
+      const b = state.buildings[state.currentBuilding];
+      const col = b.customColumns[i];
+      if (!confirm(`Remove column "${col.name}" from all rooms?`)) return;
+      b.customColumns.splice(i, 1);
+      // Remove custom data from all rooms across all floors
+      const allFloors = b.blocks.flatMap(bl => bl.floors);
+      allFloors.forEach(f => {
+        (f.rooms || []).forEach(r => {
+          if (r.customData) delete r.customData[col.name];
+        });
+      });
+      renderCustomColumns();
+      renderTable();
+      updatePreview();
+    }
+
+    // ═══════════════════════════════════════════════
+    // LEVEL TABS
+    // ═══════════════════════════════════════════════
+    function renderLevelTabs() {
+      const b = state.buildings[state.currentBuilding];
+      const tabsEl = document.getElementById('level-tabs');
+      const subEl = document.getElementById('sub-tabs');
+      tabsEl.innerHTML = '';
+
+      b.blocks.forEach((bl, i) => {
+        const tab = document.createElement('div');
+        tab.className = 'level-tab' + (i === state.currentLevel ? ' active' : '');
+        tab.innerHTML = `${bl.name}<button class="tab-remove" onclick="event.stopPropagation();removeBlock(${i})">×</button>`;
+        tab.onclick = () => { state.currentLevel = i; state.currentSubLevel = 0; renderLevelTabs(); renderSubTabs(); renderTable(); updatePreview(); };
+        tabsEl.appendChild(tab);
+      });
+      const addBtn = document.createElement('div');
+      addBtn.className = 'tab-add';
+      addBtn.textContent = '+';
+      addBtn.title = 'Add block';
+      addBtn.onclick = () => { addBlockName(); renderLevelTabs(); renderSubTabs(); };
+      tabsEl.appendChild(addBtn);
+      renderSubTabs();
+    }
+
+    function renderSubTabs() {
+      const b = state.buildings[state.currentBuilding];
+      const subEl = document.getElementById('sub-tabs');
+      if (!b.blocks[state.currentLevel]) { subEl.innerHTML = ''; subEl.classList.remove('visible'); return; }
+      const block = b.blocks[state.currentLevel];
+      subEl.innerHTML = '';
+      subEl.classList.add('visible');
+
+      block.floors.forEach((f, i) => {
+        const tab = document.createElement('div');
+        tab.className = 'sub-tab' + (i === state.currentSubLevel ? ' active' : '');
+        tab.innerHTML = `Floor ${i}<button class="tab-remove" onclick="event.stopPropagation();removeSubFloor(${i})">×</button>`;
+        tab.onclick = () => { state.currentSubLevel = i; renderSubTabs(); renderTable(); updatePreview(); };
+        subEl.appendChild(tab);
+      });
+      const addBtn = document.createElement('div');
+      addBtn.className = 'tab-add';
+      addBtn.style.cssText = 'padding:4px 8px;font-size:12px';
+      addBtn.textContent = '+';
+      addBtn.onclick = () => {
+        block.floors.push(makeEmptyFloor());
+        state.currentSubLevel = block.floors.length - 1;
+        renderSubTabs();
+        renderTable();
+        updatePreview();
+      };
+      subEl.appendChild(addBtn);
+      const curFloor = block.floors[state.currentSubLevel];
+      if (curFloor) {
+        const sep = document.createElement('div');
+        sep.style.cssText = 'margin-left:auto;display:flex;gap:4px';
+        if (state.currentSubLevel < block.floors.length - 1 && (curFloor.rooms || []).length > 0) {
+          const upBtn = document.createElement('div');
+          upBtn.className = 'tab-add';
+          upBtn.style.cssText = 'padding:4px 8px;font-size:11px';
+          upBtn.textContent = '↑';
+          upBtn.title = 'Copy this floor to all floors above';
+          upBtn.onclick = () => copyFloorUp();
+          sep.appendChild(upBtn);
+        }
+        if (state.currentSubLevel > 0) {
+          const belowBtn = document.createElement('div');
+          belowBtn.className = 'tab-add';
+          belowBtn.style.cssText = 'padding:4px 8px;font-size:11px';
+          belowBtn.textContent = '↓';
+          belowBtn.title = 'Copy from floor below to this floor';
+          belowBtn.onclick = () => copyFloorFromBelow();
+          sep.appendChild(belowBtn);
+        }
+        if (sep.children.length > 0) subEl.appendChild(sep);
+      }
+    }
+
+    function floorHasData(floor) {
+      return (floor.rooms && floor.rooms.length > 0) || (floor.edges && floor.edges.length > 0);
+    }
+
+    function adjustRoomName(name, floorDiff) {
+      const m = name.match(/^([A-Za-z\s]*?)(\d+)$/);
+      if (!m) return name;
+      const num = parseInt(m[2]);
+      const inc = num >= 100 ? floorDiff * 100 : floorDiff;
+      return m[1] + String(num + inc);
+    }
+
+    function copyFloorUp() {
+      const block = state.buildings[state.currentBuilding]?.blocks[state.currentLevel];
+      if (!block) return;
+      const srcFloor = state.currentSubLevel;
+      const src = block.floors[srcFloor];
+      if (!src || srcFloor >= block.floors.length - 1) return;
+      const upCount = block.floors.length - srcFloor - 1;
+      if (!confirm(`Copy ${src.rooms.length} rooms and ${src.edges.length} edges from Floor ${srcFloor} to ${upCount} upper floor${upCount > 1 ? 's' : ''}?`)) return;
+      for (let fi = srcFloor + 1; fi < block.floors.length; fi++) {
+        const floorDiff = fi - srcFloor;
+        const rooms = JSON.parse(JSON.stringify(src.rooms));
+        rooms.forEach(r => { r.name = adjustRoomName(r.name, floorDiff); });
+        block.floors[fi].rooms = rooms;
+        block.floors[fi].edges = JSON.parse(JSON.stringify(src.edges));
+      }
+      recomputeAllIds();
+      renderSubTabs();
+      renderTable();
+      updatePreview();
+      setStatus(`Copied to ${upCount} floor${upCount > 1 ? 's' : ''} above`);
+    }
+
+    function copyFloorFromBelow() {
+      const block = state.buildings[state.currentBuilding]?.blocks[state.currentLevel];
+      if (!block || state.currentSubLevel <= 0) return;
+      const src = block.floors[state.currentSubLevel - 1];
+      if (!src || !src.rooms.length) return alert('Floor below has no rooms to copy');
+      if (!confirm(`Copy ${src.rooms.length} rooms and ${src.edges.length} edges from Floor ${state.currentSubLevel - 1} to Floor ${state.currentSubLevel}?`)) return;
+      const rooms = JSON.parse(JSON.stringify(src.rooms));
+      rooms.forEach(r => { r.name = adjustRoomName(r.name, 1); });
+      block.floors[state.currentSubLevel].rooms = rooms;
+      block.floors[state.currentSubLevel].edges = JSON.parse(JSON.stringify(src.edges));
+      recomputeAllIds();
+      renderSubTabs();
+      renderTable();
+      updatePreview();
+      setStatus(`Copied from Floor ${state.currentSubLevel - 1}`);
+    }
+
+    function removeSubFloor(i) {
+      const b = state.buildings[state.currentBuilding];
+      const block = b.blocks[state.currentLevel];
+      if (!block) return;
+      if (block.floors.length <= 1) return alert('Need at least one floor');
+      const floor = block.floors[i];
+      if (floorHasData(floor) && !confirm('This floor has rooms/edges. Delete anyway?')) return;
+      block.floors.splice(i, 1);
+      if (state.currentSubLevel >= block.floors.length) state.currentSubLevel = block.floors.length - 1;
+      recomputeAllIds();
+      renderSubTabs();
+      renderTable();
+      updatePreview();
+    }
+
+    // ═══════════════════════════════════════════════
+    // SECTION TABS
+    // ═══════════════════════════════════════════════
+    function switchSection(section) {
+      state.currentSection = section;
+      document.querySelectorAll('.section-tab').forEach(t => t.classList.toggle('active', t.dataset.section === section));
+      renderTable();
+    }
+
+    // ═══════════════════════════════════════════════
+    // REORDER (mouse-based drag)
+    // ═══════════════════════════════════════════════
+    function makeTableDraggable(tbody, list, onReorder) {
+      let dragSrcIdx = null;
+      tbody.addEventListener('mousedown', e => {
+        const handle = e.target.closest('.btn-drag');
+        if (!handle) return;
+        const row = e.target.closest('tr');
+        if (!row) return;
+        dragSrcIdx = parseInt(row.dataset.idx);
+        if (isNaN(dragSrcIdx)) return;
+        row.classList.add('dragging');
+
+        const onUp = e2 => {
+          document.removeEventListener('mouseup', onUp);
+          row.classList.remove('dragging');
+          const target = document.elementFromPoint(e2.clientX, e2.clientY);
+          const targetRow = target?.closest('tr');
+          if (!targetRow || targetRow === row) { dragSrcIdx = null; return; }
+          const targetIdx = parseInt(targetRow.dataset.idx);
+          if (isNaN(targetIdx) || dragSrcIdx === targetIdx) { dragSrcIdx = null; return; }
+          const item = list.splice(dragSrcIdx, 1)[0];
+          list.splice(targetIdx, 0, item);
+          dragSrcIdx = null;
+          onReorder();
+        };
+        document.addEventListener('mouseup', onUp);
+        e.preventDefault();
+      });
+    }
+
+    // ═══════════════════════════════════════════════
+    // TABLE RENDERING
+    // ═══════════════════════════════════════════════
+    function getCurrentFloor() {
+      const b = state.buildings[state.currentBuilding];
+      if (!b) return null;
+      return b.blocks[state.currentLevel]?.floors[state.currentSubLevel] || null;
+    }
+
+    function renderTable() {
+      const floor = getCurrentFloor();
+      if (!floor) return;
+      document.getElementById('empty-state').style.display = 'none';
+      document.getElementById('table-content').style.display = 'block';
+      const el = document.getElementById('table-content');
+
+      if (state.currentSection === 'rooms') renderRoomsTable(el, floor);
+      else if (state.currentSection === 'edges') renderEdgesTable(el, floor);
+      else if (state.currentSection === 'connections') renderConnectionsTable(el);
+    }
+
+    // ── ROOMS TABLE ──
+    function renderRoomsTable(el, floor) {
+      const b = state.buildings[state.currentBuilding];
+      const customCols = b.customColumns || [];
+
+      let html = `<table><thead><tr>
+    <th></th><th>#</th><th>Node ID</th><th>Room Name</th><th>Type</th><th>Sp.</th>`;
+      customCols.forEach(col => { html += `<th>${esc(col.name)}</th>`; });
+      html += `<th></th></tr></thead><tbody>`;
+
+      (floor.rooms || []).forEach((r, i) => {
+        html += `<tr data-idx="${i}">
+      <td style="text-align:center"><span class="btn-drag">↕</span></td>
+      <td class="row-num">${i + 1}</td>
+      <td class="node-id-cell"><code>${esc(r.nodeId || '')}</code></td>
+      <td><input value="${esc(r.name)}" oninput="updateRoom(${i},'name',this.value)"></td>
+      <td><select onchange="updateRoom(${i},'type',this.value)">
+        ${ROOM_TYPES.map(t => `<option value="${t}"${r.type === t ? ' selected' : ''}>${t}</option>`).join('')}
+      </select></td>
+      <td style="text-align:center"><input type="checkbox" ${r.special ? 'checked' : ''} onchange="toggleSpecial(${i},this.checked)"></td>`;
+        customCols.forEach((col, ci) => {
+          const val = (r.customData || {})[col.name] ?? col.defaultValue ?? '';
+          html += `<td><input value="${esc(val)}" oninput="updateRoomCustom(${i},'${esc(col.name)}',this.value)"></td>`;
+        });
+        html += `<td><button class="btn-del" onclick="deleteRoom(${i})">×</button></td>
+    </tr>`;
+      });
+      html += `</tbody></table>
+    <div class="table-actions">
+      <button class="btn btn-sm" onclick="addRoom()">+ Add Room</button>
+      <button class="btn btn-sm" onclick="addCorridor()">+ Add Corridor</button>
+      <button class="btn btn-sm" onclick="addStaircase()">+ Add Staircase</button>
+      <button class="btn btn-sm" onclick="addWashroom()">+ Add Washroom</button>
+      <button class="btn btn-sm" onclick="bulkAddRooms()">+ Bulk Add</button>
+    </div>`;
+      el.innerHTML = html;
+      const tbody = el.querySelector('tbody');
+      if (tbody) makeTableDraggable(tbody, floor.rooms, () => { recomputeAllIds(); renderTable(); updatePreview(); });
+    }
+
+    function addRoom() { addRoomWithType('room', 'Room'); }
+    function addCorridor() { addRoomWithType('corridor', 'Corridor'); }
+    function addStaircase() { addRoomWithType('staircase', 'Staircase'); }
+    function addWashroom() { addRoomWithType('washroom', 'Washroom'); }
+
+    function addRoomWithType(type, name) {
+      const floor = getCurrentFloor();
+      if (!floor.rooms) floor.rooms = [];
+      floor.rooms.push({ name, type, nodeId: '' });
+      recomputeAllIds();
+      renderTable();
+      updatePreview();
+    }
+
+    function updateRoom(i, field, val) {
+      const floor = getCurrentFloor();
+      floor.rooms[i][field] = val;
+      updatePreview();
+    }
+
+    function updateRoomCustom(i, colName, val) {
+      const floor = getCurrentFloor();
+      if (!floor.rooms[i].customData) floor.rooms[i].customData = {};
+      floor.rooms[i].customData[colName] = val;
+      updatePreview();
+    }
+
+    function deleteRoom(i) {
+      getCurrentFloor().rooms.splice(i, 1);
+      renderTable();
+      updatePreview();
+    }
+
+    function toggleSpecial(i, val) {
+      const floor = getCurrentFloor();
+      floor.rooms[i].special = val;
+      updatePreview();
+    }
+
+    function bulkAddRooms() {
+      const startName = prompt('Enter starting room name (e.g. B401):');
+      if (!startName) return;
+      const countStr = prompt('Number of rooms to add:');
+      if (!countStr) return;
+      const count = parseInt(countStr);
+      if (isNaN(count) || count < 1) return alert('Invalid count');
+      const match = startName.match(/^([A-Za-z\s]*?)(\d+)$/);
+      if (!match) return alert('Name must end with digits (e.g. B401)');
+      const prefix = match[1];
+      const startNum = parseInt(match[2]);
+      const floor = getCurrentFloor();
+      if (!floor.rooms) floor.rooms = [];
+      for (let i = 0; i < count; i++) {
+        const name = prefix + String(startNum + i);
+        floor.rooms.push({ name, type: 'room', nodeId: '' });
+      }
+      recomputeAllIds();
+      renderTable();
+      updatePreview();
+      setStatus(`Added ${count} rooms (${prefix}${startNum} → ${prefix}${startNum + count - 1})`);
+    }
+
+    // ── EDGES TABLE ──
+    function renderEdgesTable(el, floor) {
+      const rooms = (floor.rooms || []).filter(r => r.nodeId);
+
+      let html = `<table><thead><tr>
+    <th>#</th><th>From Node</th><th>To Node</th><th>Length (m)</th><th></th>
+  </tr></thead><tbody>`;
+      (floor.edges || []).forEach((e, i) => {
+        html += `<tr>
+      <td class="row-num">${i + 1}</td>
+      <td><select onchange="updateEdge(${i},'from',this.value)">
+        <option value="">— select —</option>
+        ${rooms.map(r => `<option value="${esc(r.nodeId)}"${e.from === r.nodeId ? ' selected' : ''}>${esc(r.nodeId)} — ${esc(r.name)}</option>`).join('')}
+      </select></td>
+      <td><select onchange="updateEdge(${i},'to',this.value)">
+        <option value="">— select —</option>
+        ${rooms.map(r => `<option value="${esc(r.nodeId)}"${e.to === r.nodeId ? ' selected' : ''}>${esc(r.nodeId)} — ${esc(r.name)}</option>`).join('')}
+      </select></td>
+      <td><input type="number" step="any" value="${e.length || ''}" oninput="updateEdge(${i},'length',this.value)" placeholder="5.0"></td>
+      <td><button class="btn-del" onclick="deleteEdge(${i})">×</button></td>
+    </tr>`;
+      });
+      html += `</tbody></table>
+    <div class="table-actions">
+      <button class="btn btn-sm" onclick="addEdge()">+ Add Edge</button>
+      <button class="btn btn-sm" onclick="autoGenEdges()">Chain connect all rooms</button>
+    </div>`;
+      el.innerHTML = html;
+    }
+
+    function addEdge() {
+      const floor = getCurrentFloor();
+      if (!floor.edges) floor.edges = [];
+      floor.edges.push({ from: '', to: '', length: 5 });
+      renderTable();
+      updatePreview();
+    }
+
+    function autoGenEdges() {
+      const floor = getCurrentFloor();
+      const rooms = (floor.rooms || []).filter(r => r.nodeId);
+      if (rooms.length < 2) return alert('Need at least 2 rooms to chain connect');
+      const len = parseFloat(prompt('Edge length (m) between rooms:', '5')) || 5;
+      floor.edges = [];
+      for (let i = 0; i < rooms.length - 1; i++) {
+        floor.edges.push({ from: rooms[i].nodeId, to: rooms[i + 1].nodeId, length: len });
+      }
+      renderTable();
+      updatePreview();
+      setStatus(`Chain-connected ${rooms.length} rooms (${floor.edges.length} edges)`);
+    }
+
+    function updateEdge(i, field, val) {
+      const floor = getCurrentFloor();
+      if (field === 'length') val = val ? parseFloat(val) : 0;
+      floor.edges[i][field] = val;
+      updatePreview();
+    }
+
+    function deleteEdge(i) {
+      getCurrentFloor().edges.splice(i, 1);
+      renderTable();
+      updatePreview();
+    }
+
+    // ── CONNECTIONS TABLE ──
+    function getFloorRooms(b, levelIdx) {
+      const blockIdx = Math.floor(levelIdx / 10);
+      const floorIdx = levelIdx % 10;
+      return b.blocks[blockIdx]?.floors[floorIdx]?.rooms || [];
+    }
+
+    function renderConnectionsTable(el) {
+      const b = state.buildings[state.currentBuilding];
+      if (!b.connections) b.connections = [];
+
+      const levelEntries = b.blocks.flatMap((bl, bi) =>
+        bl.floors.map((_, fi) => ({ name: `${bl.name} Floor ${fi}`, idx: bi * 10 + fi }))
+      );
+
+      let html = `<table><thead><tr>
+    <th></th><th>#</th><th>Type</th><th>From Level</th><th>From Node</th><th>To Level</th><th>To Node</th><th>Weight (m)</th><th></th>
+  </tr></thead><tbody>`;
+
+      b.connections.forEach((c, i) => {
+        const fromFloorRooms = getFloorRooms(b, parseInt(c.fromLevel));
+        const toFloorRooms = getFloorRooms(b, parseInt(c.toLevel));
+
+        html += `<tr data-idx="${i}">
+      <td style="text-align:center"><span class="btn-drag">↕</span></td>
+      <td class="row-num">${i + 1}</td>
+      <td><select onchange="updateConn(${i},'type',this.value)">
+        ${CONN_TYPES.map(t => `<option value="${t}"${c.type === t ? ' selected' : ''}>${t}</option>`).join('')}
+      </select></td>
+      <td><select onchange="updateConn(${i},'fromLevel',this.value); renderTable()">
+        ${levelEntries.map(e => `<option value="${e.idx}"${parseInt(c.fromLevel) === e.idx ? ' selected' : ''}>${e.name}</option>`).join('')}
+      </select></td>
+      <td><select onchange="updateConn(${i},'fromNode',this.value)">
+        <option value="">— select —</option>
+        ${fromFloorRooms.map(r => `<option value="${esc(r.nodeId)}"${c.fromNode === r.nodeId ? ' selected' : ''}>${esc(r.nodeId)} — ${esc(r.name)}</option>`).join('')}
+      </select></td>
+      <td><select onchange="updateConn(${i},'toLevel',this.value); renderTable()">
+        ${levelEntries.map(e => `<option value="${e.idx}"${parseInt(c.toLevel) === e.idx ? ' selected' : ''}>${e.name}</option>`).join('')}
+      </select></td>
+      <td><select onchange="updateConn(${i},'toNode',this.value)">
+        <option value="">— select —</option>
+        ${toFloorRooms.map(r => `<option value="${esc(r.nodeId)}"${c.toNode === r.nodeId ? ' selected' : ''}>${esc(r.nodeId)} — ${esc(r.name)}</option>`).join('')}
+      </select></td>
+      <td><input type="number" step="any" value="${c.weight || ''}" oninput="updateConn(${i},'weight',this.value)" placeholder="5.0"></td>
+      <td><button class="btn-del" onclick="deleteConn(${i})">×</button></td>
+    </tr>`;
+      });
+      html += `</tbody></table>
+    <div class="table-actions">
+      <button class="btn btn-sm" onclick="addConnection()">+ Add Connection</button>
+    </div>`;
+      el.innerHTML = html;
+      const tbody = el.querySelector('tbody');
+      if (tbody) makeTableDraggable(tbody, b.connections, () => { renderTable(); updatePreview(); });
+    }
+
+    function addConnection() {
+      const b = state.buildings[state.currentBuilding];
+      if (!b.connections) b.connections = [];
+      b.connections.push({ type: 'staircase', fromLevel: 0, fromNode: '', toLevel: 1, toNode: '', weight: 5 });
+      renderTable();
+      updatePreview();
+    }
+
+    function updateConn(i, field, val) {
+      const b = state.buildings[state.currentBuilding];
+      if (field === 'weight') val = val ? parseFloat(val) : 0;
+      b.connections[i][field] = val;
+      updatePreview();
+    }
+
+    function deleteConn(i) {
+      state.buildings[state.currentBuilding].connections.splice(i, 1);
+      renderTable();
+      updatePreview();
+    }
+
+    // ═══════════════════════════════════════════════
+    // JSON PREVIEW & EXPORT
+    // ═══════════════════════════════════════════════
+    function updatePreview() {
+      const b = state.buildings[state.currentBuilding];
+      if (!b) { document.getElementById('json-preview').textContent = '// Select a building and level'; return; }
+      document.getElementById('json-preview').textContent = JSON.stringify(buildGraphJson(b), null, 2);
+    }
+
+    function togglePreviewCollapse() {
+      state.previewCollapsed = !state.previewCollapsed;
+      const panel = document.getElementById('right-panel');
+      const expandBtn = document.getElementById('expand-panel-btn');
+      const collapseBtn = document.getElementById('collapse-preview-btn');
+      panel.classList.toggle('hidden', state.previewCollapsed);
+      expandBtn.style.display = state.previewCollapsed ? 'flex' : 'none';
+      collapseBtn.textContent = state.previewCollapsed ? '▶' : '▼';
+      collapseBtn.title = state.previewCollapsed ? 'Expand' : 'Collapse';
+    }
+
+    function buildGraphJson(b) {
+      const nodes = [];
+      const edges = [];
+      const specials = [];
+      const prefix = b.prefix || b.slug;
+
+      b.blocks.forEach((bl, bi) => {
+        bl.floors.forEach((floor, fi) => {
+          (floor.rooms || []).forEach(r => {
+            if (r.nodeId) {
+              nodes.push({ id: r.nodeId, name: r.name, type: r.type, block: bl.name, blockIdx: bi, floor: fi });
+              if (r.special) specials.push({ id: r.nodeId, name: r.name, type: r.type });
+            }
+          });
+          (floor.edges || []).forEach(e => {
+            if (e.from && e.to) {
+              edges.push({ from: e.from, to: e.to, weight: parseFloat(e.length) || 0 });
+            }
+          });
+        });
+      });
+
+      const connsExport = (b.connections || []).filter(c => c.fromNode && c.toNode).map(c => ({
+        type: c.type, fromLevel: c.fromLevel, fromNode: c.fromNode, toLevel: c.toLevel, toNode: c.toNode, weight: parseFloat(c.weight) || 0,
+      }));
+
+      return {
+        id: b.outdoorBuildingId != null ? b.outdoorBuildingId : b.slug,
+        name: b.name,
+        prefix,
+        entrance_node: b.entranceNodeId || '',
+        blocks: b.blocks.map(bl => ({ name: bl.name, floors: bl.floors.length })),
+        total_rooms: nodes.length,
+        nodes,
+        edges,
+        connections: connsExport,
+        nodeCount: nodes.length,
+        edgeCount: edges.length,
+        specials,
+      };
+    }
+
+    function buildAllJsons() {
+      const result = {};
+      state.buildings.forEach(b => {
+        const pref = b.prefix || b.slug;
+        result[pref + '_graph.json'] = buildGraphJson(b);
+      });
+      return result;
+    }
+
+    // ═══════════════════════════════════════════════
+    // DOWNLOAD
+    // ═══════════════════════════════════════════════
+    function downloadAll() {
+      if (state.buildings.length === 0) return alert('No buildings to export');
+      const allJsons = buildAllJsons();
+
+      Object.entries(allJsons).forEach(([path, data]) => {
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = path;
+        a.click();
+        URL.revokeObjectURL(url);
+      });
+      setStatus(`Downloaded ${Object.keys(allJsons).length} files`);
+    }
+
+    function downloadSingle() {
+      const b = state.buildings[state.currentBuilding];
+      if (!b) return;
+      const pref = b.prefix || b.slug;
+      const json = buildGraphJson(b);
+
+      const blob = new Blob([JSON.stringify(json, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = pref + '_graph.json';
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function copyJson() {
+      const text = document.getElementById('json-preview').textContent;
+      navigator.clipboard.writeText(text).then(() => setStatus('JSON copied to clipboard'));
+    }
+
+    async function downloadZip() {
+      if (state.buildings.length === 0) return alert('No buildings to export');
+      if (typeof JSZip === 'undefined') {
+        const s = document.createElement('script');
+        s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';
+        document.head.appendChild(s);
+        await new Promise(r => s.onload = r);
+      }
+      if (typeof saveAs === 'undefined') {
+        const s = document.createElement('script');
+        s.src = 'https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js';
+        document.head.appendChild(s);
+        await new Promise(r => s.onload = r);
+      }
+
+      const zip = new JSZip();
+      const allJsons = buildAllJsons();
+
+      Object.entries(allJsons).forEach(([path, data]) => {
+        zip.file(path, JSON.stringify(data, null, 2));
+      });
+
+      const blob = await zip.generateAsync({ type: 'blob' });
+      saveAs(blob, 'indoor_data.zip');
+      setStatus('Downloaded indoor_data.zip');
+    }
+
+    // ═══════════════════════════════════════════════
+    // LOAD / IMPORT
+    // ═══════════════════════════════════════════════
+    function loadFromFile() {
+      const choice = confirm('OK = Load individual JSON files\nCancel = Load from folder');
+      if (choice) document.getElementById('file-input').click();
+      else document.getElementById('folder-input').click();
+    }
+
+    function handleFileLoad(event) {
+      const files = event.target.files;
+      const fileMap = {};
+      let pending = files.length;
+      Array.from(files).forEach(f => {
+        const reader = new FileReader();
+        reader.onload = e => {
+          try {
+            fileMap[f.name] = JSON.parse(e.target.result);
+          } catch (err) {
+            setStatus(`Error parsing ${f.name}: ${err.message}`);
+          }
+          pending--;
+          if (pending === 0) processLoadedFiles(fileMap);
+        };
+        reader.readAsText(f);
+      });
+    }
+
+    function handleFolderLoad(event) {
+      const files = event.target.files;
+      const fileMap = {};
+      let pending = files.length;
+      Array.from(files).forEach(f => {
+        if (!f.name.endsWith('.json')) { pending--; return; }
+        const reader = new FileReader();
+        reader.onload = e => {
+          try {
+            const path = f.webkitRelativePath || f.name;
+            fileMap[path] = JSON.parse(e.target.result);
+          } catch (err) { }
+          pending--;
+          if (pending === 0) processLoadedFiles(fileMap);
+        };
+        reader.readAsText(f);
+      });
+    }
+
+    function processLoadedFiles(fileMap) {
+      const entries = Object.entries(fileMap);
+      if (entries.length === 0) return setStatus('No valid JSON files loaded');
+
+      const metadata = entries.find(([k]) => k.includes('metadata'));
+      const graph = entries.find(([k]) => k.includes('_graph.json'));
+      const floors = entries.filter(([k]) => k.match(/floor_\w+\.json/));
+      const index = entries.find(([k]) => k.includes('index'));
+
+      if (metadata) {
+        const floorData = floors.map(([k, v]) => v);
+        importFromMetadata(metadata[1], floorData);
+      } else if (graph) {
+        importFromGraph(graph[1]);
+      } else if (index) {
+        importFromIndex(index[1], entries);
+      } else if (floors.length) {
+        importFromRawFloors(floors.map(([k, v]) => v));
+      } else {
+        setStatus('No recognized JSON format found');
+      }
+      setStatus(`Loaded ${entries.length} files`);
+    }
+
+    function importFromGraph(g) {
+      const building = {
+        name: g.name || (typeof g.id === 'number' ? String(g.id) : g.id) || 'Imported',
+        slug: typeof g.id === 'number' ? String(g.id) : (g.id || 'imported_' + Date.now()),
+        outdoorBuildingId: typeof g.id === 'number' ? g.id : null,
+        prefix: g.prefix || '',
+        entranceNodeId: g.entrance_node || '',
+        customColumns: [],
+        blocks: [],
+        connections: [],
+      };
+      const specialIds = {};
+      (g.specials || []).forEach(s => { specialIds[s.id] = true; });
+      const blockMap = {};
+      (g.nodes || []).forEach(n => {
+        const bi = n.blockIdx || 0;
+        const fi = n.floor || 0;
+        if (!blockMap[bi]) blockMap[bi] = { name: n.block || 'Block ' + String.fromCharCode(65 + bi), floors: {} };
+        if (!blockMap[bi].floors[fi]) blockMap[bi].floors[fi] = { rooms: [], edges: [] };
+        blockMap[bi].floors[fi].rooms.push({
+          name: n.name, type: n.type || 'room',
+          nodeId: n.id || '', special: !!specialIds[n.id], customData: {},
+        });
+      });
+      (g.edges || []).forEach(e => {
+        if (e.type) {
+          if (!g.connections) building.connections.push({ type: e.type, fromLevel: e.fromLevel != null ? e.fromLevel : levelFromNode(e.from), fromNode: e.from, toLevel: e.toLevel != null ? e.toLevel : levelFromNode(e.to), toNode: e.to, weight: e.weight || 5 });
+          return;
+        }
+        const srcNode = (g.nodes || []).find(n => n.id === e.from);
+        if (!srcNode) return;
+        const bi = srcNode.blockIdx || 0;
+        const fi = srcNode.floor || 0;
+        if (blockMap[bi] && blockMap[bi].floors[fi]) {
+          blockMap[bi].floors[fi].edges.push({ from: e.from, to: e.to, length: e.weight || 0 });
+        }
+      });
+      function levelFromNode(id) {
+        if (!id || id.length < 3) return 0;
+        const block = parseInt(id.substring(0, 2), 10) - 1;
+        const floor = parseInt(id.substring(2, 3), 10);
+        return (isNaN(block) ? 0 : block) * 10 + (isNaN(floor) ? 0 : floor);
+      }
+      (g.connections || []).forEach(c => {
+        building.connections.push({ type: c.type || 'staircase', fromLevel: c.fromLevel != null ? c.fromLevel : levelFromNode(c.fromNode), fromNode: c.fromNode, toLevel: c.toLevel != null ? c.toLevel : levelFromNode(c.toNode), toNode: c.toNode, weight: parseFloat(c.weight) || 5 });
+      });
+      Object.keys(blockMap).sort().forEach(bi => {
+        const bl = blockMap[bi];
+        const floors = [];
+        Object.keys(bl.floors).sort().forEach(fi => floors.push(bl.floors[fi]));
+        building.blocks.push({ name: bl.name, floors });
+      });
+      if (!building.blocks.length) building.blocks.push({ name: 'Block A', floors: [makeEmptyFloor()] });
+      state.buildings.push(building);
+      state.currentBuilding = state.buildings.length - 1;
+      recomputeAllIds();
+      selectBuilding(state.currentBuilding);
+    }
+
+    function importFromMetadata(meta, floorData) {
+      const building = {
+        name: meta.name || meta.id,
+        slug: meta.id,
+        prefix: meta.prefix || '',
+        entranceNodeId: meta.entrance_node || '',
+        customColumns: meta.custom_columns || [],
+        blocks: [],
+        connections: meta.connections || [],
+      };
+
+      if (meta.blocks) {
+        meta.blocks.forEach(bl => {
+          const blockFloors = [];
+          for (let fi = 0; fi < bl.floors; fi++) {
+            const fd = floorData.find(f => {
+              const name = f.level || '';
+              return name.includes(bl.name) && name.includes('Floor ' + fi);
+            });
+            blockFloors.push(importFloorData(fd));
+          }
+          building.blocks.push({ name: bl.name, floors: blockFloors });
+        });
+      } else {
+        const floorCount = meta.floors || meta.floor_names?.length || 3;
+        building.blocks.push({ name: 'Block A', floors: [] });
+        for (let i = 0; i < floorCount; i++) {
+          building.blocks[0].floors.push(importFloorData(floorData[i] || null));
+        }
+      }
+
+      state.buildings.push(building);
+      state.currentBuilding = state.buildings.length - 1;
+      recomputeAllIds();
+      selectBuilding(state.currentBuilding);
+    }
+
+    function importFloorData(fd) {
+      if (!fd) return makeEmptyFloor();
+      return {
+        rooms: (fd.rooms || []).map(r => ({
+          name: r.name || r.id || '',
+          type: r.type || 'room',
+          nodeId: r.id || '',
+          special: r.special || false,
+          customData: r.custom || {},
+        })),
+        edges: (fd.edges || []).map(e => ({
+          from: e.from, to: e.to, length: e.length,
+        })),
+      };
+    }
+
+    function importFromIndex(indexData, allFiles) {
+      (indexData.buildings || []).forEach(bMeta => {
+        const metaEntry = allFiles.find(([k]) => k.includes(bMeta.id) && k.includes('metadata'));
+        if (metaEntry) {
+          const floors = allFiles.filter(([k]) => k.includes(bMeta.id) && k.match(/floor_\w+\.json/)).map(([k, v]) => v);
+          importFromMetadata(metaEntry[1], floors);
+        }
+      });
+    }
+
+    function importFromRawFloors(floors) {
+      const building = {
+        name: 'Imported Building',
+        slug: 'imported_' + Date.now(),
+        customColumns: [],
+        blocks: [{ name: 'Block A', floors: floors.map(f => importFloorData(f)) }],
+        connections: [],
+      };
+      state.buildings.push(building);
+      state.currentBuilding = state.buildings.length - 1;
+      recomputeAllIds();
+      selectBuilding(state.currentBuilding);
+    }
+
+    // ═══════════════════════════════════════════════
+    // MODALS
+    // ═══════════════════════════════════════════════
+    function showAllOutdoorBuildings() {
+      const dd = document.getElementById('new-name-dropdown');
+      const input = document.getElementById('new-name');
+      if (dd.classList.contains('visible')) { dd.classList.remove('visible'); return; }
+      newBuildingOutdoorId = '';
+      dd.innerHTML = '';
+      if (!state.outdoorBuildings.length) return;
+      state.outdoorBuildings.forEach(b => {
+        const div = document.createElement('div');
+        div.className = 'autocomplete-item';
+        div.textContent = b.name;
+        div.addEventListener('mousedown', function(e) {
+          e.preventDefault();
+          input.value = b.name;
+          newBuildingOutdoorId = b.node_id;
+          newBuildingOutdoorIndex = b.id;
+          dd.innerHTML = '';
+          dd.classList.remove('visible');
+        });
+        dd.appendChild(div);
+      });
+      dd.classList.add('visible');
+    }
+
+    function showNewBuildingModal() {
+      document.getElementById('new-building-modal').style.display = 'flex';
+      document.getElementById('new-name').value = '';
+      document.getElementById('new-name-dropdown').classList.remove('visible');
+      newBuildingOutdoorId = '';
+      newBuildingOutdoorIndex = null;
+      document.getElementById('new-name').focus();
+    }
+
+    // Autocomplete on the building name field
+    document.getElementById('new-name').addEventListener('input', function() {
+      const q = this.value.trim().toLowerCase();
+      const dd = document.getElementById('new-name-dropdown');
+      newBuildingOutdoorId = '';
+      newBuildingOutdoorIndex = null;
+      dd.innerHTML = '';
+      dd.classList.remove('visible');
+      if (!q || !state.outdoorBuildings.length) return;
+      const matches = state.outdoorBuildings.filter(b => b.name.toLowerCase().includes(q)).slice(0, 8);
+      matches.forEach(b => {
+        const div = document.createElement('div');
+        div.className = 'autocomplete-item';
+        div.textContent = b.name;
+        div.addEventListener('mousedown', function(e) {
+          e.preventDefault();
+          document.getElementById('new-name').value = b.name;
+          newBuildingOutdoorId = b.node_id;
+          newBuildingOutdoorIndex = b.id;
+          dd.innerHTML = '';
+          dd.classList.remove('visible');
+        });
+        dd.appendChild(div);
+      });
+      dd.classList.add('visible');
+    });
+    document.getElementById('new-name').addEventListener('blur', function() {
+      const el = this;
+      setTimeout(() => {
+        document.getElementById('new-name-dropdown').classList.remove('visible');
+        if (!newBuildingOutdoorId && state.outdoorBuildings.length) el.value = '';
+      }, 150);
+    });
+
+    function closeModal(id) {
+      document.getElementById(id).style.display = 'none';
+    }
+
+    function createBuilding() {
+      const name = document.getElementById('new-name').value.trim();
+      if (!name) return alert('Name required');
+      const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '');
+
+      const building = {
+        name, slug,
+        prefix: '',
+        entranceNodeId: newBuildingOutdoorId || '',
+        outdoorBuildingId: newBuildingOutdoorIndex != null ? newBuildingOutdoorIndex : null,
+        customColumns: [],
+        blocks: [{ name: 'Block A', floors: [makeEmptyFloor()] }],
+        connections: [],
+      };
+      state.buildings.push(building);
+      closeModal('new-building-modal');
+      renderBuildingList();
+      selectBuilding(state.buildings.length - 1);
+      setStatus(`Created "${name}"`);
+    }
+
+    // ═══════════════════════════════════════════════
+    // UTILS
+    // ═══════════════════════════════════════════════
+    function haversineM(lat1, lon1, lat2, lon2) {
+      const R = 6371000;
+      const toRad = d => d * Math.PI / 180;
+      const dLat = toRad(lat2 - lat1), dLon = toRad(lon2 - lon1);
+      const a = Math.sin(dLat / 2) ** 2 + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon / 2) ** 2;
+      return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    }
+
+    function esc(s) { return String(s || '').replace(/"/g, '&quot;').replace(/</g, '&lt;'); }
+    function setStatus(msg) { document.getElementById('status-text').textContent = msg; }
+
+    function toggleTheme() {
+      const html = document.documentElement;
+      html.setAttribute('data-theme', html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+    }
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.modal-overlay').forEach(m => m.style.display = 'none');
+      }
+    });
+  </script>
+</body>
+
+</html>

@@ -148,8 +148,8 @@
   }
 
   // ── LOAD ROADS (your data) ──
-  fetch('./frontend/public/data/outdoor/rendering/roads.geojson')
-    .then(function(r) { return r.json(); })
+  fetch('./client/public/data/outdoor/rendering/roads.geojson')
+    .then(function(r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
     .then(function(data) {
       L.geoJSON(data, {
         style: function(f) {
@@ -163,18 +163,20 @@
           return s[hw] || {color:'#0097a7',weight:2,opacity:0.6};
         }
       }).addTo(map);
-    });
+    })
+    .catch(function(err) { console.error('[coord] Roads load error:', err.message); });
 
   // ── LOAD GRAPH NODES + EDGES ──
   var nodeAdj = {};
   var graphNodes = [];
 
   Promise.all([
-    fetch('./frontend/public/data/outdoor/navigation/campus_graph.json').then(function(r) { return r.json(); }),
-    fetch('./frontend/public/data/outdoor/navigation/campus_buildings.json').then(function(r) { return r.json(); })
+    fetch('http://127.0.0.1:8080/outdoor/graph').then(function(r) { if (!r.ok) throw new Error('graph HTTP ' + r.status); return r.json(); }),
+    fetch('http://127.0.0.1:8080/buildings').then(function(r) { if (!r.ok) throw new Error('buildings HTTP ' + r.status); return r.json(); })
   ]).then(function(results) {
     var graph = results[0];
     var buildings = results[1];
+    if (!graph || !graph.nodes || !graph.edges) throw new Error('Invalid graph data');
     graphNodes = graph.nodes;
 
     // build adjacency list for edge count
@@ -227,6 +229,9 @@
       pt.bindTooltip('Node ' + n.id, { permanent: false, direction: 'top', offset: [0, -6] });
       pt.addTo(map);
     });
+  }).catch(function(err) {
+    console.error('[coord] Graph load error:', err.message);
+    document.getElementById('node-info').style.display = 'none';
   });
 </script>
 </body>

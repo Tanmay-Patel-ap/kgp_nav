@@ -1,3 +1,0 @@
-F:/projects/dsa/campus_nav/backend/build/CMakeFiles/campus_nav.dir
-F:/projects/dsa/campus_nav/backend/build/CMakeFiles/edit_cache.dir
-F:/projects/dsa/campus_nav/backend/build/CMakeFiles/rebuild_cache.dir

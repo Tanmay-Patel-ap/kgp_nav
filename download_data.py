@@ -17,8 +17,8 @@ if sys.platform == "win32":
         pass
 
 PLACE_NAME = "IIT Kharagpur"
-OUT_NAV    = "backend/data/outdoor/navigation"
-OUT_REN    = "backend/data/outdoor/rendering"
+OUT_NAV    = "server/data/outdoor"
+OUT_REN    = "client/data/outdoor"
 
 os.makedirs(OUT_NAV, exist_ok=True)
 os.makedirs(OUT_REN,  exist_ok=True)
@@ -47,8 +47,13 @@ def geom_to_coords(geom):
     return None
 
 def save_geojson(path, features):
-    with open(path, "w", encoding="utf-8") as f:
-        json.dump({"type":"FeatureCollection","features":features}, f)
+    try:
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump({"type":"FeatureCollection","features":features}, f)
+    except (OSError, IOError, json.JSONDecodeError) as e:
+        print(f"{FAIL} Failed to write {path}: {e}")
+    except Exception as e:
+        print(f"{FAIL} Unexpected error writing {path}: {e}")
 
 def section(title):
     print("\n" + "-" * 50)
@@ -65,35 +70,57 @@ def verify(label, ok, detail=""):
 # ═══════════════════════════════════════════════════
 section("1/6  WALK GRAPH")
 
-G_raw  = ox.graph_from_place(PLACE_NAME, network_type="walk", simplify=False, retain_all=True)
-G_proj = ox.project_graph(G_raw)
+try:
+    G_raw  = ox.graph_from_place(PLACE_NAME, network_type="walk", simplify=False, retain_all=True)
+    G_proj = ox.project_graph(G_raw)
+except Exception as e:
+    print(f"{FAIL} OSMnx graph download failed: {e}")
+    print("  Check network connectivity and OSM server availability.")
+    sys.exit(1)
+
+if not G_raw or len(G_raw.nodes) == 0:
+    print(f"{FAIL} Empty graph returned from OSM")
+    sys.exit(1)
 
 node_id_map = {osm_id: i for i, osm_id in enumerate(G_raw.nodes())}
 
 nodes_out = []
 for osm_id in G_raw.nodes():
-    d  = G_raw.nodes[osm_id]
-    dp = G_proj.nodes[osm_id]
-    nodes_out.append({
-        "id": node_id_map[osm_id], "osm_id": int(osm_id),
-        "lat": round_coord(d["y"]),  "lon": round_coord(d["x"]),
-        "x":   round(float(dp["x"]),2), "y": round(float(dp["y"]),2),
-    })
+    try:
+        d  = G_raw.nodes[osm_id]
+        dp = G_proj.nodes[osm_id]
+        nodes_out.append({
+            "id": node_id_map[osm_id], "osm_id": int(osm_id),
+            "lat": round_coord(d["y"]),  "lon": round_coord(d["x"]),
+            "x":   round(float(dp["x"]),2), "y": round(float(dp["y"]),2),
+        })
+    except (KeyError, ValueError, TypeError) as e:
+        print(f"{WARN} Skipping bad node {osm_id}: {e}")
 
 seen_edges = set()
 edges_out  = []
 for u, v, ed in G_raw.edges(data=True):
-    key = (min(node_id_map[u], node_id_map[v]), max(node_id_map[u], node_id_map[v]))
-    if key in seen_edges: continue
-    seen_edges.add(key)
-    edges_out.append({"from": node_id_map[u], "to": node_id_map[v],
-                      "length": round(float(ed.get("length",1.0)),2)})
+    try:
+        u_id = node_id_map.get(u)
+        v_id = node_id_map.get(v)
+        if u_id is None or v_id is None: continue
+        key = (min(u_id, v_id), max(u_id, v_id))
+        if key in seen_edges: continue
+        seen_edges.add(key)
+        edges_out.append({"from": u_id, "to": v_id,
+                          "length": round(float(ed.get("length",1.0)),2)})
+    except (ValueError, TypeError) as e:
+        print(f"{WARN} Skipping bad edge {u}->{v}: {e}")
 
 graph_path = f"{OUT_NAV}/campus_graph.json"
-with open(graph_path, "w") as f:
-    json.dump({"nodes": nodes_out, "edges": edges_out}, f)
+try:
+    with open(graph_path, "w") as f:
+        json.dump({"nodes": nodes_out, "edges": edges_out}, f)
+    print(f"\n  Saved → {graph_path}")
+except (OSError, IOError) as e:
+    print(f"{FAIL} Cannot write {graph_path}: {e}")
+    sys.exit(1)
 
-print(f"\n  Saved → {graph_path}")
 print(f"\n  VERIFICATION")
 
 # check 1: counts
@@ -132,7 +159,15 @@ print(f"  Sample edge: {edges_out[0]}")
 # ═══════════════════════════════════════════════════
 section("2/6  BUILDINGS JSON  (named, for navigation)")
 
-buildings_raw = ox.features_from_place(PLACE_NAME, tags={"building": True})
+try:
+    buildings_raw = ox.features_from_place(PLACE_NAME, tags={"building": True})
+except Exception as e:
+    print(f"{FAIL} OSMnx building features download failed: {e}")
+    sys.exit(1)
+
+if buildings_raw is None or buildings_raw.empty:
+    print(f"{FAIL} No building features returned")
+    sys.exit(1)
 
 buildings_out = []
 seen_names    = set()
@@ -309,7 +344,16 @@ for hw, count in sorted(hw_types.items(), key=lambda x: -x[1]):
 # ═══════════════════════════════════════════════════
 section("5/6  CAMPUS BOUNDARY")
 
-boundary_gdf   = ox.geocode_to_gdf(PLACE_NAME)
+try:
+    boundary_gdf   = ox.geocode_to_gdf(PLACE_NAME)
+except Exception as e:
+    print(f"{FAIL} OSMnx geocode failed: {e}")
+    sys.exit(1)
+
+if boundary_gdf is None or boundary_gdf.empty:
+    print(f"{FAIL} No boundary data returned")
+    sys.exit(1)
+
 boundary_feats = []
 
 for _, row in boundary_gdf.iterrows():

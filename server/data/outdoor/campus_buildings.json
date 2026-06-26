@@ -1,0 +1,490 @@
+[
+  {
+    "id": 0,
+    "name": "Technology Student Gymkhana",
+    "lat": 22.31863,
+    "lon": 87.302574,
+    "node_id": 103,
+    "osm_node_id": 3437299270
+  },
+  {
+    "id": 1,
+    "name": "H M C Office",
+    "lat": 22.319378,
+    "lon": 87.307208,
+    "node_id": 33,
+    "osm_node_id": 2613601310
+  },
+  {
+    "id": 2,
+    "name": "IIT Puri Gate Security Office",
+    "lat": 22.322359,
+    "lon": 87.309983,
+    "node_id": 1158,
+    "osm_node_id": 9457173371
+  },
+  {
+    "id": 3,
+    "name": "Rajendra Mishra School of Engineering Entrepreneurship",
+    "lat": 22.32224,
+    "lon": 87.309449,
+    "node_id": 34,
+    "osm_node_id": 2613601311
+  },
+  {
+    "id": 4,
+    "name": "EduTech Solutions Limited",
+    "lat": 22.322319,
+    "lon": 87.30959,
+    "node_id": 34,
+    "osm_node_id": 2613601311
+  },
+  {
+    "id": 5,
+    "name": "Innovation Lab",
+    "lat": 22.321687,
+    "lon": 87.309235,
+    "node_id": 34,
+    "osm_node_id": 2613601311
+  },
+  {
+    "id": 6,
+    "name": "B_Block",
+    "lat": 22.319966,
+    "lon": 87.299948,
+    "node_id": 1107,
+    "osm_node_id": 9457155184
+  },
+  {
+    "id": 7,
+    "name": "C_Block",
+    "lat": 22.320313,
+    "lon": 87.29968,
+    "node_id": 45,
+    "osm_node_id": 2613601361
+  },
+  {
+    "id": 8,
+    "name": "D_Block",
+    "lat": 22.320625,
+    "lon": 87.299554,
+    "node_id": 1441,
+    "osm_node_id": 11238009328
+  },
+  {
+    "id": 9,
+    "name": "Mother Terese Hall of Residence",
+    "lat": 22.317631,
+    "lon": 87.306137,
+    "node_id": 1489,
+    "osm_node_id": 11436643909
+  },
+  {
+    "id": 10,
+    "name": "Department of Architecture and Regional Planning",
+    "lat": 22.317956,
+    "lon": 87.310657,
+    "node_id": 1145,
+    "osm_node_id": 9457166971
+  },
+  {
+    "id": 11,
+    "name": "Department of Architecture And Regional Planning Annex Building",
+    "lat": 22.318035,
+    "lon": 87.311521,
+    "node_id": 382,
+    "osm_node_id": 9104709301
+  },
+  {
+    "id": 12,
+    "name": "DEPT OF AGRICULTURE ENGINEERING",
+    "lat": 22.317497,
+    "lon": 87.315372,
+    "node_id": 355,
+    "osm_node_id": 5413709082
+  },
+  {
+    "id": 13,
+    "name": "DEPT OF CHEMICAL ENGINEERING",
+    "lat": 22.319143,
+    "lon": 87.314405,
+    "node_id": 1268,
+    "osm_node_id": 9457270955
+  },
+  {
+    "id": 14,
+    "name": "Central Stores",
+    "lat": 22.317622,
+    "lon": 87.319784,
+    "node_id": 817,
+    "osm_node_id": 9455116799
+  },
+  {
+    "id": 15,
+    "name": "Old Hangar",
+    "lat": 22.319929,
+    "lon": 87.316639,
+    "node_id": 895,
+    "osm_node_id": 9455148343
+  },
+  {
+    "id": 16,
+    "name": "Department of Ocean Engineering and Naval Architecture",
+    "lat": 22.320735,
+    "lon": 87.315796,
+    "node_id": 12,
+    "osm_node_id": 1471100893
+  },
+  {
+    "id": 17,
+    "name": "Indira Gandhi Hall of Residence",
+    "lat": 22.317827,
+    "lon": 87.306953,
+    "node_id": 1487,
+    "osm_node_id": 11436643907
+  },
+  {
+    "id": 18,
+    "name": "JCB Hall of Residence",
+    "lat": 22.319571,
+    "lon": 87.302151,
+    "node_id": 137,
+    "osm_node_id": 3957444628
+  },
+  {
+    "id": 19,
+    "name": "Counselling Centre",
+    "lat": 22.319599,
+    "lon": 87.303071,
+    "node_id": 26,
+    "osm_node_id": 2613601300
+  },
+  {
+    "id": 20,
+    "name": "MMM Canteen",
+    "lat": 22.321513,
+    "lon": 87.302471,
+    "node_id": 1461,
+    "osm_node_id": 11243060119
+  },
+  {
+    "id": 21,
+    "name": "Vocational Training Institute",
+    "lat": 22.309102,
+    "lon": 87.296809,
+    "node_id": 696,
+    "osm_node_id": 9443801998
+  },
+  {
+    "id": 22,
+    "name": "Kendriya Vidyalaya",
+    "lat": 22.309004,
+    "lon": 87.297365,
+    "node_id": 696,
+    "osm_node_id": 9443801998
+  },
+  {
+    "id": 23,
+    "name": "Center for Railway Research",
+    "lat": 22.316401,
+    "lon": 87.321378,
+    "node_id": 1505,
+    "osm_node_id": 12651769988
+  },
+  {
+    "id": 24,
+    "name": "osm-trail",
+    "lat": 22.313336,
+    "lon": 87.313673,
+    "node_id": 1017,
+    "osm_node_id": 9457098080
+  },
+  {
+    "id": 25,
+    "name": "State Bank of India",
+    "lat": 22.322048,
+    "lon": 87.310712,
+    "node_id": 1159,
+    "osm_node_id": 9457173372
+  },
+  {
+    "id": 26,
+    "name": "Puri Gate Entry IIT Kharagpur",
+    "lat": 22.322316,
+    "lon": 87.310037,
+    "node_id": 1158,
+    "osm_node_id": 9457173371
+  },
+  {
+    "id": 27,
+    "name": "Indian Post Kharagpur Technology",
+    "lat": 22.321588,
+    "lon": 87.310195,
+    "node_id": 1272,
+    "osm_node_id": 9457270959
+  },
+  {
+    "id": 28,
+    "name": "Electronics and Electrical Communications Engineering",
+    "lat": 22.320932,
+    "lon": 87.310159,
+    "node_id": 1170,
+    "osm_node_id": 9457173383
+  },
+  {
+    "id": 29,
+    "name": "Central Library - Annex",
+    "lat": 22.320413,
+    "lon": 87.309452,
+    "node_id": 1115,
+    "osm_node_id": 9457161187
+  },
+  {
+    "id": 30,
+    "name": "Department of Aerospace Engineering",
+    "lat": 22.321489,
+    "lon": 87.313465,
+    "node_id": 1175,
+    "osm_node_id": 9457173388
+  },
+  {
+    "id": 31,
+    "name": "Department of Mining Engineering",
+    "lat": 22.321489,
+    "lon": 87.311276,
+    "node_id": 1165,
+    "osm_node_id": 9457173378
+  },
+  {
+    "id": 32,
+    "name": "Central Research Facility",
+    "lat": 22.320668,
+    "lon": 87.314255,
+    "node_id": 1173,
+    "osm_node_id": 9457173386
+  },
+  {
+    "id": 33,
+    "name": "Old Building IIT Kharagpur",
+    "lat": 22.319623,
+    "lon": 87.315419,
+    "node_id": 357,
+    "osm_node_id": 5413709084
+  },
+  {
+    "id": 34,
+    "name": "Material Science Center",
+    "lat": 22.321444,
+    "lon": 87.314702,
+    "node_id": 1183,
+    "osm_node_id": 9457173396
+  },
+  {
+    "id": 35,
+    "name": "Department of Metallurgical and Material Engineering",
+    "lat": 22.320367,
+    "lon": 87.313194,
+    "node_id": 1431,
+    "osm_node_id": 11171041269
+  },
+  {
+    "id": 36,
+    "name": "Vinod Gupta School of Management",
+    "lat": 22.318949,
+    "lon": 87.313691,
+    "node_id": 1266,
+    "osm_node_id": 9457270953
+  },
+  {
+    "id": 37,
+    "name": "Department of  Civil Engineering",
+    "lat": 22.318607,
+    "lon": 87.312177,
+    "node_id": 68,
+    "osm_node_id": 2614503550
+  },
+  {
+    "id": 38,
+    "name": "Department of Mechanical Engineering",
+    "lat": 22.318929,
+    "lon": 87.3129,
+    "node_id": 1428,
+    "osm_node_id": 11171041266
+  },
+  {
+    "id": 39,
+    "name": "IIT Kharagpur - Main Building",
+    "lat": 22.319452,
+    "lon": 87.310592,
+    "node_id": 75,
+    "osm_node_id": 2614503568
+  },
+  {
+    "id": 40,
+    "name": "Department of Remote Sensing",
+    "lat": 22.318564,
+    "lon": 87.314586,
+    "node_id": 1268,
+    "osm_node_id": 9457270955
+  },
+  {
+    "id": 41,
+    "name": "DEPT OF INDUSTRIAL ENGINEERING AND MANAGEMENT",
+    "lat": 22.318317,
+    "lon": 87.313355,
+    "node_id": 1089,
+    "osm_node_id": 9457124166
+  },
+  {
+    "id": 42,
+    "name": "DEPT OF COMPUTER SCIENCE AND ENGINEERING",
+    "lat": 22.317758,
+    "lon": 87.309087,
+    "node_id": 67,
+    "osm_node_id": 2614503548
+  },
+  {
+    "id": 43,
+    "name": "Takshashila Complex",
+    "lat": 22.317218,
+    "lon": 87.312205,
+    "node_id": 1359,
+    "osm_node_id": 9457375383
+  },
+  {
+    "id": 44,
+    "name": "J C Bose Laboratory Complex",
+    "lat": 22.316009,
+    "lon": 87.311713,
+    "node_id": 384,
+    "osm_node_id": 9104709303
+  },
+  {
+    "id": 45,
+    "name": "Center of Rural Development",
+    "lat": 22.316758,
+    "lon": 87.322301,
+    "node_id": 150,
+    "osm_node_id": 5297589205
+  },
+  {
+    "id": 46,
+    "name": "NA Block",
+    "lat": 22.309561,
+    "lon": 87.309535,
+    "node_id": 598,
+    "osm_node_id": 9443710178
+  },
+  {
+    "id": 47,
+    "name": "E Block",
+    "lat": 22.308955,
+    "lon": 87.31039,
+    "node_id": 593,
+    "osm_node_id": 9443710173
+  },
+  {
+    "id": 48,
+    "name": "D Block",
+    "lat": 22.309318,
+    "lon": 87.310699,
+    "node_id": 585,
+    "osm_node_id": 9443710165
+  },
+  {
+    "id": 49,
+    "name": "C Block",
+    "lat": 22.309216,
+    "lon": 87.309953,
+    "node_id": 594,
+    "osm_node_id": 9443710174
+  },
+  {
+    "id": 50,
+    "name": "A Block",
+    "lat": 22.309658,
+    "lon": 87.310522,
+    "node_id": 585,
+    "osm_node_id": 9443710165
+  },
+  {
+    "id": 51,
+    "name": "B Block",
+    "lat": 22.309558,
+    "lon": 87.309982,
+    "node_id": 588,
+    "osm_node_id": 9443710168
+  },
+  {
+    "id": 52,
+    "name": "Nehru Hall of Residence",
+    "lat": 22.319816,
+    "lon": 87.298203,
+    "node_id": 1484,
+    "osm_node_id": 11365676948
+  },
+  {
+    "id": 53,
+    "name": "Patel Hall of Residence",
+    "lat": 22.320219,
+    "lon": 87.299857,
+    "node_id": 1107,
+    "osm_node_id": 9457155184
+  },
+  {
+    "id": 54,
+    "name": "AISEC IIT KHARAGPUR",
+    "lat": 22.321912,
+    "lon": 87.30934,
+    "node_id": 34,
+    "osm_node_id": 2613601311
+  },
+  {
+    "id": 55,
+    "name": "Rajendra Prasad Hall of Residence",
+    "lat": 22.321802,
+    "lon": 87.308108,
+    "node_id": 1423,
+    "osm_node_id": 11169274903
+  },
+  {
+    "id": 56,
+    "name": "Radhakrishnan Hall of Residence",
+    "lat": 22.322218,
+    "lon": 87.306365,
+    "node_id": 1347,
+    "osm_node_id": 9457375361
+  },
+  {
+    "id": 57,
+    "name": "Meghnad Saha Hall of Residence",
+    "lat": 22.321867,
+    "lon": 87.304774,
+    "node_id": 30,
+    "osm_node_id": 2613601306
+  },
+  {
+    "id": 58,
+    "name": "Lala Lajpat Rai Hall of Residence",
+    "lat": 22.321705,
+    "lon": 87.303255,
+    "node_id": 27,
+    "osm_node_id": 2613601303
+  },
+  {
+    "id": 59,
+    "name": "MMM Hall of Residence",
+    "lat": 22.321441,
+    "lon": 87.301675,
+    "node_id": 1387,
+    "osm_node_id": 10304034879
+  },
+  {
+    "id": 60,
+    "name": "LBS Hall of Residence",
+    "lat": 22.321317,
+    "lon": 87.29897,
+    "node_id": 1445,
+    "osm_node_id": 11238009332
+  }
+]
