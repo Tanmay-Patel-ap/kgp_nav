@@ -198,6 +198,4 @@ Open `client/index.html` via any HTTP server (or VS Code Live Server).
 
 ## Author
 
-**Aditya**
-
-*Built with ❤️ for KGPians!!*
+*Built with ❤️ for KGPians by* **Aditya**
