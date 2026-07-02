@@ -25,6 +25,13 @@
 .room-select-wrap input:focus{border-color:var(--accent)}
 .room-select-wrap input:disabled{opacity:0.4}
 .room-select-wrap input::placeholder{color:var(--text-dim)}
+.room-lock-overlay{
+  position:absolute;
+  inset:0;
+  z-index:5;
+  cursor:pointer;
+  border-radius:var(--radius-sm);
+}
 
 .room-dropdown{
   position:absolute;

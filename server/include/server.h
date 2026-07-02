@@ -2,8 +2,10 @@
 #include "graph.h"
 #include "buildings.h"
 #include "indoor.h"
+#include "auth.h"
 #include <string>
 #include <unordered_map>
+#include <vector>
 
 struct ServerConfig {
     std::string host = "0.0.0.0";
@@ -12,8 +14,10 @@ struct ServerConfig {
 
 // Blocking — runs until process killed
 void runServer(
-    const ServerConfig&                                       config,
-    const Graph&                                              graph,
-    const std::vector<Building>&                              buildings,
-    const std::unordered_map<std::string, IndoorGraph>&        indoorGraphs
+    const ServerConfig&                                               config,
+    const Graph&                                                      graph,
+    const std::vector<Building>&                                      buildings,
+    const std::unordered_map<std::string, IndoorGraph>&                indoorGraphs,
+    std::vector<User>&                                                users,
+    std::unordered_map<std::string, Session>&                         sessions
 );

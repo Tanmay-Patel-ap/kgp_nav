@@ -149,15 +149,28 @@ function selectBuilding(input, dropdown, key, building) {
 }
 
 // ── UPDATE ROOM INPUT ─────────────────────────────────────────────
+let roomReqId = { origin: 0, dest: 0 };
+
 function updateRoomWrap(key, building) {
   const inp = key === 'origin' ? originRoomInp : destRoomInp;
   if (!inp) return;
 
   roomData[key] = [];
+  roomReqId[key]++;
 
   if (!building) {
     inp.disabled = true;
     inp.placeholder = 'Select a building first';
+    inp.value = '';
+    searchState[key].room = null;
+    return;
+  }
+
+  const token = localStorage.getItem('kgp_auth_token');
+  const isAuth = !!token;
+  if (!isAuth) {
+    inp.disabled = true;
+    inp.placeholder = 'Log in for room navigation';
     inp.value = '';
     searchState[key].room = null;
     return;
@@ -172,28 +185,30 @@ function updateRoomWrap(key, building) {
     return;
   }
 
-  // Building has indoor data — load rooms
   inp.disabled = true;
   inp.placeholder = 'Loading...';
   inp.value = '';
   searchState[key].room = null;
 
+  const reqId = roomReqId[key];
+
   API.getIndoorGraph(indoorInfo.prefix)
     .then(graph => {
+      if (reqId !== roomReqId[key]) return;
+
       if (!graph || !graph.nodes || graph.nodes.length === 0) {
         inp.placeholder = 'No rooms';
         inp.disabled = true;
         return;
       }
 
-      // Store non-entrance rooms for search
       roomData[key] = graph.nodes.filter(n => n.id && n.type !== 'entrance');
 
       inp.value = 'Main gate';
       inp.disabled = false;
     })
     .catch(() => {
-      inp.placeholder = 'Failed to load';
+      if (reqId === roomReqId[key]) inp.placeholder = 'Failed to load';
     });
 }
 
@@ -201,6 +216,9 @@ function updateRoomWrap(key, building) {
 function clearDropdown(dropdown) {
   dropdown.innerHTML = '';
 }
+
+// Expose for auth.js to re-trigger after login
+window._roomUpdate = { updateRoomWrap };
 
 function getSearchState() {
   return searchState;

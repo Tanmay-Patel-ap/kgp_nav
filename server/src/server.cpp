@@ -1,6 +1,7 @@
 #include "server.h"
 #include "pathfinder.h"
 #include "buildings.h"
+#include "auth.h"
 #include <httplib.h>
 #include <nlohmann/json.hpp>
 #include <iostream>
@@ -12,7 +13,7 @@ using json = nlohmann::json;
 static void setCORS(httplib::Response& res) {
     res.set_header("Access-Control-Allow-Origin",  "*");
     res.set_header("Access-Control-Allow-Methods", "GET, OPTIONS");
-    res.set_header("Access-Control-Allow-Headers", "Content-Type");
+    res.set_header("Access-Control-Allow-Headers", "Authorization");
 }
 
 // ── HELPERS ───────────────────────────────────────────────────────
@@ -37,19 +38,46 @@ static void sendError(httplib::Response& res, const std::string& msg, int status
     sendJson(res, { { "error", msg } }, status);
 }
 
+// ── AUTH HELPERS ──────────────────────────────────────────────────
+static std::string extractToken(const httplib::Request& req) {
+    auto it = req.headers.find("Authorization");
+    if (it == req.headers.end()) return "";
+    std::string val = it->second;
+    if (val.size() > 7 && val.substr(0, 7) == "Bearer ")
+        return val.substr(7);
+    return "";
+}
+
+static bool requireAuth(const httplib::Request& req,
+                        std::unordered_map<std::string, Session>& sessions,
+                        httplib::Response& res, std::string& username) {
+    std::string token = extractToken(req);
+    if (token.empty() || !validateToken(sessions, token, username)) {
+        sendJson(res, {{"error", "Unauthorized"}}, 401);
+        return false;
+    }
+    return true;
+}
+
 // ── SERVER ────────────────────────────────────────────────────────
 void runServer(
-    const ServerConfig&                                       config,
-    const Graph&                                              graph,
-    const std::vector<Building>&                              buildings,
-    const std::unordered_map<std::string, IndoorGraph>&        indoorGraphs)
+    const ServerConfig&                                               config,
+    const Graph&                                                      graph,
+    const std::vector<Building>&                                      buildings,
+    const std::unordered_map<std::string, IndoorGraph>&                indoorGraphs,
+    std::vector<User>&                                                users,
+    std::unordered_map<std::string, Session>&                         sessions)
 {
     httplib::Server svr;
 
-    // ── PREFLIGHT (CORS OPTIONS) ───────────────────────────────
-    svr.Options(".*", [](const httplib::Request&, httplib::Response& res) {
-        setCORS(res);
-        res.status = 204;
+    // ── CORS PREFLIGHT ──────────────────────────────────────────
+    svr.set_pre_routing_handler([](const httplib::Request& req, httplib::Response& res) {
+        if (req.method == "OPTIONS") {
+            setCORS(res);
+            res.status = 204;
+            return httplib::Server::HandlerResponse::Handled;
+        }
+        return httplib::Server::HandlerResponse::Unhandled;
     });
 
     // ── GET /buildings ─────────────────────────────────────────
@@ -167,9 +195,71 @@ void runServer(
         sendJson(res, {{"nodes", nodesObj}, {"edges", edgesArr}});
     });
 
+    // ── AUTH ROUTES ────────────────────────────────────────────
+
+    // GET /auth/register?email=...&username=...&password=...
+    svr.Get("/auth/register", [&](const httplib::Request& req, httplib::Response& res) {
+        std::string email    = req.get_param_value("email");
+        std::string username = req.get_param_value("username");
+        std::string password = req.get_param_value("password");
+        if (email.empty() || username.empty() || password.empty()) {
+            sendError(res, "Missing parameters"); return;
+        }
+        std::string err;
+        std::string token = registerUser(users, email, username, password, err);
+        if (token.empty()) { sendError(res, err); return; }
+        Session sess;
+        sess.username = username;
+        sess.expires_at = std::time(nullptr) + 7 * 24 * 3600;
+        sessions[token] = sess;
+        sendJson(res, {{"token", token}, {"username", username}});
+    });
+
+    // GET /auth/login?login=...&password=...
+    svr.Get("/auth/login", [&](const httplib::Request& req, httplib::Response& res) {
+        std::string login    = req.get_param_value("login");
+        std::string password = req.get_param_value("password");
+        std::string err, out_username;
+        std::string token = loginUser(users, login, password, sessions, out_username, err);
+        if (token.empty()) { sendError(res, err); return; }
+        sendJson(res, {{"token", token}, {"username", out_username}});
+    });
+
+    // GET /auth/validate — check token validity, return username
+    svr.Get("/auth/validate", [&](const httplib::Request& req, httplib::Response& res) {
+        std::string token = extractToken(req);
+        std::string username;
+        bool valid = !token.empty() && validateToken(sessions, token, username);
+        if (!valid) { sendJson(res, {{"valid", false}}, 401); return; }
+        sendJson(res, {{"valid", true}, {"username", username}});
+    });
+
+    // GET /auth/logout
+    svr.Get("/auth/logout", [&](const httplib::Request& req, httplib::Response& res) {
+        std::string token = extractToken(req);
+        if (!token.empty()) removeSession(sessions, token);
+        sendJson(res, {{"ok", true}});
+    });
+
+    // GET /auth/me
+    svr.Get("/auth/me", [&](const httplib::Request& req, httplib::Response& res) {
+        std::string username;
+        if (!requireAuth(req, sessions, res, username)) return;
+        // Find the full user record
+        for (const auto& u : users) {
+            if (u.username == username) {
+                sendJson(res, {{"email", u.email}, {"username", u.username}});
+                return;
+            }
+        }
+        sendError(res, "User not found", 404);
+    });
+
     // ── GET /indoor ─────────────────────────────────────────────
     // Returns list of available indoor buildings with metadata
-    svr.Get("/indoor", [&](const httplib::Request&, httplib::Response& res) {
+    svr.Get("/indoor", [&](const httplib::Request& req, httplib::Response& res) {
+        std::string _u;
+        if (!requireAuth(req, sessions, res, _u)) return;
         std::cout << "[server] GET /indoor → " << indoorGraphs.size() << " buildings\n";
         json arr = json::array();
         for (const auto& [prefix, ig] : indoorGraphs) {
@@ -191,7 +281,9 @@ void runServer(
     // ── GET /indoor/graph?b=PREFIX ──────────────────────────────
     // Returns full graph JSON for a building (for room dropdowns)
     svr.Get("/indoor/graph", [&](const httplib::Request& req, httplib::Response& res) {
+        { std::string _u; if (!requireAuth(req, sessions, res, _u)) return; }
         if (!req.has_param("b")) { sendError(res, "Missing parameter: b"); return; }
+
         std::string prefix = req.get_param_value("b");
         auto it = indoorGraphs.find(prefix);
         if (it == indoorGraphs.end()) {
@@ -213,6 +305,7 @@ void runServer(
     // ── GET /indoor/navigate?b=PREFIX&from=NODE_ID&to=NODE_ID ───
     // Runs Dijkstra on indoor graph, returns path + textual steps
     svr.Get("/indoor/navigate", [&](const httplib::Request& req, httplib::Response& res) {
+        { std::string _u; if (!requireAuth(req, sessions, res, _u)) return; }
         if (!req.has_param("b") || !req.has_param("from") || !req.has_param("to")) {
             sendError(res, "Missing parameters: b, from, to");
             return;
@@ -257,7 +350,9 @@ void runServer(
     // ── GET /combined-route?from_bld=ID&from_room=NODE_ID&to_bld=ID&to_room=NODE_ID ──
     // Integrated indoor + outdoor routing.
     // from_room / to_room are optional (empty = use building entrance/main gate).
+    // Requires authentication (indoor segments).
     svr.Get("/combined-route", [&](const httplib::Request& req, httplib::Response& res) {
+        { std::string _u; if (!requireAuth(req, sessions, res, _u)) return; }
         if (!req.has_param("from_bld") || !req.has_param("to_bld")) {
             sendError(res, "Missing parameters: from_bld, to_bld");
             return;
@@ -408,9 +503,14 @@ void runServer(
         });
     });
 
+    // ── STATIC FILES ────────────────────────────────────────────
+    if (!svr.set_mount_point("/", "client")) {
+        std::cerr << "[server] Failed to mount client/ directory\n";
+    }
+
     // ── START ──────────────────────────────────────────────────
-    std::cout << "[server] Listening on "
-              << config.host << ":" << config.port << "\n";
+    std::cout << "[server] Listening on http://127.0.0.1:" << config.port << "\n";
+    std::cout << "[server] Open http://127.0.0.1:" << config.port << "/ in your browser\n";
 
     if (!svr.listen(config.host, config.port)) {
         std::cerr << "[server] Failed to bind port " << config.port << "\n";

@@ -11,3 +11,4 @@ coord_picker.html
 download_data.py
 client/indoor_editor.html
 .vscode
+server/data/users.json

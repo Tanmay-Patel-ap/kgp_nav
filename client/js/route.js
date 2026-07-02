@@ -6,6 +6,13 @@ async function fetchAndDrawRoute(originBuilding, destBuilding, originRoom, destR
   clearRoute();
   setStatus('ROUTING...');
 
+  // If rooms selected but not authenticated, block
+  const isAuth = !!localStorage.getItem('kgp_auth_token');
+  if ((originRoom || destRoom) && !isAuth) {
+    setStatus('LOG IN FOR INDOOR ROUTING');
+    return;
+  }
+
   try {
     // Decide which endpoint to call
     const hasIndoor = (originRoom || destRoom);
@@ -28,7 +35,7 @@ async function fetchAndDrawRoute(originBuilding, destBuilding, originRoom, destR
     highlightBuilding(destBuilding.name,   'route');
 
     // Fit map to route (outdoor path only)
-    const bounds = path.map(p => [p.lat, p.lon]);
+    const bounds = path.filter(p => p && p.lat != null && p.lon != null).map(p => [p.lat, p.lon]);
     window.map.fitBounds(bounds, { padding: [60, 60] });
 
     // Show combined steps if available, else use traditional format

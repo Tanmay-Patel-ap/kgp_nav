@@ -2,10 +2,13 @@
 #include "buildings.h"
 #include "server.h"
 #include "indoor.h"
+#include "auth.h"
 #include <iostream>
 #include <cstdlib>
+#include <ctime>
 #include <fstream>
 #include <unordered_map>
+#include <vector>
 
 int main(int argc, char* argv[]) {
 
@@ -65,12 +68,26 @@ int main(int argc, char* argv[]) {
         std::cerr << "[main] No indoor data loaded — indoor navigation disabled\n";
     }
 
+    // Seed random for auth token/salt generation
+    std::srand(static_cast<unsigned>(std::time(nullptr)));
+
+    // ── LOAD USERS ─────────────────────────────────────────────
+    std::vector<User> users;
+    std::string usersPath = dataDir + "/users.json";
+    if (!loadUsers(usersPath, users)) {
+        std::cerr << "[main] Failed to load users. Starting fresh.\n";
+        users.clear();
+    }
+
+    // ── SESSIONS (in-memory) ───────────────────────────────────
+    std::unordered_map<std::string, Session> sessions;
+
     // ── START SERVER ───────────────────────────────────────────
     ServerConfig config;
     config.host = "0.0.0.0";
     config.port = port;
 
-    runServer(config, graph, buildings, indoorGraphs);
+    runServer(config, graph, buildings, indoorGraphs, users, sessions);
 
     return 0;
 }

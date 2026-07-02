@@ -28,6 +28,7 @@ set(SOURCES
     src/pathfinder.cpp
     src/server.cpp
     src/indoor.cpp
+    src/auth.cpp
 )
 
 # ── Binary ────────────────────────────────────────────────────────

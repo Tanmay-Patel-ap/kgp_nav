@@ -4,8 +4,11 @@ const API_BASE = 'http://127.0.0.1:8080';
 // ── FETCH WRAPPER ────────────────────────────────────────────────
 async function apiFetch(path) {
   let res;
+  const headers = {};
+  const token = localStorage.getItem('kgp_auth_token');
+  if (token) headers['Authorization'] = 'Bearer ' + token;
   try {
-    res = await fetch(API_BASE + path);
+    res = await fetch(API_BASE + path, { headers });
   } catch (e) {
     throw new Error(`Network error — is the server running? (${e.message})`);
   }
